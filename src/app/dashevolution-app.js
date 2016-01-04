@@ -12,10 +12,8 @@ angular.module('dashevolution', [
 	'templates.common' 
 ])
 
-
 	.config(function ($httpProvider, $stateProvider, $locationProvider, $urlRouterProvider) { 
 		
-
 		$locationProvider.html5Mode(false);
 		$stateProvider
 			.state('root', {

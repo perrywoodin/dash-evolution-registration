@@ -119,10 +119,8 @@ angular.module('dashevolution', [
 	'templates.common' 
 ])
 
-
 	.config(["$httpProvider", "$stateProvider", "$locationProvider", "$urlRouterProvider", function ($httpProvider, $stateProvider, $locationProvider, $urlRouterProvider) { 
 		
-
 		$locationProvider.html5Mode(false);
 		$stateProvider
 			.state('root', {
@@ -224,11 +222,6 @@ angular.module("common/layout/header.tpl.html", []).run(["$templateCache", funct
 
 angular.module("common/layout/main.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/layout/main.tpl.html",
-    "<!-- <nav class=\"navbar navbar-default navbar-static-top\">\n" +
-    "  <div class=\"container\">\n" +
-    "ticker\n" +
-    "  </div>\n" +
-    "</nav> -->\n" +
     "<div ui-view=\"header\"></div>\n" +
     "\n" +
     "<div ui-view=\"subheader\"></div>\n" +
@@ -236,7 +229,6 @@ angular.module("common/layout/main.tpl.html", []).run(["$templateCache", functio
     "	\n" +
     "<div class=\"container\">\n" +
     "	<div class=\"main-view\" ui-view=\"main\"></div>\n" +
-    "\n" +
     "</div>\n" +
     "\n" +
     "<div class=\"row\" ui-view=\"footer\"></div>");
