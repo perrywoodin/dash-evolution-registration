@@ -7,6 +7,9 @@ angular.module('dashevolution', [
 	// App modules
 	'layout',
 	'home',
+	'signup',
+	'converters',
+	'documentation',
 	// Template cache
 	'templates.app',
 	'templates.common' 
