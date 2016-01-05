@@ -75,7 +75,30 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 
 angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("signup/signup.tpl.html",
-    "signup.tpl.html\n" +
-    "\n" +
-    "Signup form   ");
+    "<form class=\"form-horizontal\">\n" +
+    "	<div class=\"form-group\">\n" +
+    "		<label for=\"inputUsername\" class=\"col-sm-2 control-label\">Username</label>\n" +
+    "		<div class=\"col-sm-10\">\n" +
+    "			<input ng-model=\"signupCtrl.newUser.username\" type=\"text\" class=\"form-control\" id=\"inputUsername\" placeholder=\"Username\">\n" +
+    "		</div>\n" +
+    "	</div>\n" +
+    "	<div class=\"form-group\">\n" +
+    "		<label for=\"inputEmail\" class=\"col-sm-2 control-label\">Email</label>\n" +
+    "		<div class=\"col-sm-10\">\n" +
+    "			<input ng-model=\"signupCtrl.newUser.email\" type=\"email\" class=\"form-control\" id=\"inputEmail\" placeholder=\"Email\">\n" +
+    "		</div>\n" +
+    "	</div>\n" +
+    "	<div class=\"form-group\">\n" +
+    "		<label for=\"inputPubkey\" class=\"col-sm-2 control-label\">Root Pubkey</label>\n" +
+    "		<div class=\"col-sm-10\">\n" +
+    "			<input ng-model=\"signupCtrl.newUser.rootPubkey\" type=\"text\" class=\"form-control\" id=\"inputPubkey\" placeholder=\"Root Pubkey\">\n" +
+    "		</div>\n" +
+    "	</div>\n" +
+    "	<div class=\"form-group\">\n" +
+    "		<div class=\"col-sm-offset-2 col-sm-10\">\n" +
+    "			<button ng-click=\"signupCtrl.signUp()\" type=\"submit\" class=\"btn btn-primary\">Signup</button>\n" +
+    "		</div>\n" +
+    "	</div>\n" +
+    "</form>\n" +
+    "");
 }]);

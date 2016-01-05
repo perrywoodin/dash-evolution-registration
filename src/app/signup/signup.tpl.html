@@ -1,3 +1,25 @@
-signup.tpl.html
-
-Signup form   
+<form class="form-horizontal">
+	<div class="form-group">
+		<label for="inputUsername" class="col-sm-2 control-label">Username</label>
+		<div class="col-sm-10">
+			<input ng-model="signupCtrl.newUser.username" type="text" class="form-control" id="inputUsername" placeholder="Username">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="inputEmail" class="col-sm-2 control-label">Email</label>
+		<div class="col-sm-10">
+			<input ng-model="signupCtrl.newUser.email" type="email" class="form-control" id="inputEmail" placeholder="Email">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="inputPubkey" class="col-sm-2 control-label">Root Pubkey</label>
+		<div class="col-sm-10">
+			<input ng-model="signupCtrl.newUser.rootPubkey" type="text" class="form-control" id="inputPubkey" placeholder="Root Pubkey">
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button ng-click="signupCtrl.signUp()" type="submit" class="btn btn-primary">Signup</button>
+		</div>
+	</div>
+</form>

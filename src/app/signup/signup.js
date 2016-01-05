@@ -17,6 +17,20 @@ angular.module('signup', [])
 		var signupCtrl = this;
 
 		$log.info('this is the signupCtrl controller');
+
+		// ************************** BEGIN - Private Methods **************************
+
+
+		// ************************** //END - Private Methods **************************
+
+
+
+
+		// ************************** BEGIN - Public Methods **************************
+		signupCtrl.signUp = function() {
+			console.log('newUser',signupCtrl.newUser);
+		};
+		// ************************** //END - Public Methods **************************
 	}])
 
 ;
