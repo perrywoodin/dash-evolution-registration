@@ -1,4 +1,6 @@
-angular.module('signup', [])
+angular.module('signup', [
+		'signup.confirm'
+	])
 
 	.config(['$stateProvider', function($stateProvider){
 		$stateProvider
@@ -19,10 +21,9 @@ angular.module('signup', [])
 		$log.info('this is the signupCtrl controller');
 
 		// ************************** BEGIN - Private Methods **************************
-
+		
 
 		// ************************** //END - Private Methods **************************
-
 
 
 

@@ -1,4 +1,4 @@
-angular.module('templates.app', ['common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/signup.tpl.html']);
+angular.module('templates.app', ['common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/signup.tpl.html']);
 
 angular.module("common/layout/footer.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/layout/footer.tpl.html",
@@ -71,6 +71,11 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "	</div>\n" +
     "\n" +
     "</div>");
+}]);
+
+angular.module("signup/confirm/confirm.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("signup/confirm/confirm.tpl.html",
+    "confirm.tpl.html");
 }]);
 
 angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($templateCache) {

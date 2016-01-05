@@ -225,7 +225,50 @@ angular.module('home', [])
 	}])
 
 ;
-angular.module('signup', [])
+angular.module('signup.confirm', [])
+
+	.config(['$stateProvider', function($stateProvider){
+		$stateProvider
+			.state('root.signup.confirm', {
+				url: '/confirm/:code',
+				views: {
+					'main@root': {
+						templateUrl: 'signup/confirm/confirm.tpl.html',
+						controller: 'ConfirmCtrl as confirmCtrl'
+					}
+				}
+			});
+	}])
+
+	.controller('ConfirmCtrl', ['$scope', '$log', '$stateParams', '$state', function ($scope, $log, $stateParams, $state) {
+		var confirmCtrl = this,
+			code = $stateParams.code;
+
+		// If the code is not accessible from the URL, redirect to the signup page.
+		if(!code){
+			$state.go('root.signup');
+		}
+
+		$log.info('this is the confirmCtrl controller');
+		$log.info('validation code',code);
+
+		// ************************** BEGIN - Private Methods **************************
+
+
+		// ************************** //END - Private Methods **************************
+
+
+
+
+		// ************************** BEGIN - Public Methods **************************
+		
+		// ************************** //END - Public Methods **************************
+	}])
+
+;
+angular.module('signup', [
+		'signup.confirm'
+	])
 
 	.config(['$stateProvider', function($stateProvider){
 		$stateProvider
@@ -246,10 +289,9 @@ angular.module('signup', [])
 		$log.info('this is the signupCtrl controller');
 
 		// ************************** BEGIN - Private Methods **************************
-
+		
 
 		// ************************** //END - Private Methods **************************
-
 
 
 
@@ -261,7 +303,7 @@ angular.module('signup', [])
 	}])
 
 ;
-angular.module('templates.app', ['common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/signup.tpl.html']);
+angular.module('templates.app', ['common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/signup.tpl.html']);
 
 angular.module("common/layout/footer.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/layout/footer.tpl.html",
@@ -334,6 +376,11 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "	</div>\n" +
     "\n" +
     "</div>");
+}]);
+
+angular.module("signup/confirm/confirm.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("signup/confirm/confirm.tpl.html",
+    "confirm.tpl.html");
 }]);
 
 angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($templateCache) {
