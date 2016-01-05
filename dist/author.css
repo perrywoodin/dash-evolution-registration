@@ -8,36 +8,9 @@ html,body
     position: fixed;
 }
 
-img.home-logo {
-	margin: 0 auto;
-	max-width:350px;
-}
-
-td > .logo {
-	height: 20px;
-}
-
-.well-blue {
-    background-color: rgba(178, 220, 255, 0.35);
-    border: 1px solid #337AB7;
-}
-
 .main-view {
 	padding: 75px 0px 20px;
 }
-
-.alert {
-	position:absolute;
-	z-index:1;
-	right:0;
-	top:0;
-}
-
-.system-alert {
-    top:51px; 
-    width:30%;
-}
-
 .push-down {
 	margin-top:1.5em;
 }
@@ -57,8 +30,6 @@ td > .logo {
 	display:block;
 	position:relative
 }
-
-.publickey { font-family: monospace;}
 
 .input-group[class*="col-"] {
 	padding-right: 15px;
@@ -81,10 +52,6 @@ textarea.nowrap {
 
 .text-white { color: #ffffff; }
 
-.nav_icon_active { color: #00A6CB;}
-
-.loading-data { opacity: 0.25; }
-
 @keyframes fadeOut
 {
 	from { opacity: 1.0; }
@@ -101,99 +68,4 @@ textarea.nowrap {
 { 
 	animation: fadeOut 2s infinite;
 	-webkit-animation: fadeOut 2s infinite;
-}
-
-
-
-th.tablesort-sortable {
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-    cursor: pointer;
-}
-
-table .tablesort-sortable:after{
-    content:"";
-    float:right;
-    margin-top:7px;
-    visibility:hidden;
-    border-left:4px solid transparent;
-    border-right:4px solid transparent;
-
-    border-top:none;
-    border-bottom:4px solid #000;
-}
-
-table .tablesort-desc:after{
-    border-top:4px solid #000;
-    border-bottom:none;
-}
-
-table .tablesort-sortable:hover:after, table .tablesort-asc:after, table .tablesort-desc:after {
-    visibility:visible;
-}
-
-
-.panel {
-   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-}
- 
-.panel.focus {
-   border-color: #66AFE9;
-   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
-   outline: 0 none;
-}
-
-
-/*
- * Styling for the table row shown in empty tables
- */
-
-/* The row is always added as the first row in a table
-   Hide it by default */
-.showIfLast {
-    display: none;
-}
-
-/* Only show it if it is also the last row of the table. */
-.showIfLast:last-child {
-    display: table-row;
-}
-
-.showIfLast td {
-    text-align: center;
-}
-
-.showIfLast td:after {
-    content: "No data";
-}
-/* //END Table Sorting */
-.loading { }
-.fade { opacity: 0.15; }
-
-.fa-spin-custom, .glyphicon-spin {
-    -webkit-animation: spin 1000ms infinite linear;
-    animation: spin 1000ms infinite linear;
-}
-@-webkit-keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(359deg);
-        transform: rotate(359deg);
-    }
-}
-@keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(359deg);
-        transform: rotate(359deg);
-    }
 }

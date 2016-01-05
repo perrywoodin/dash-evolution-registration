@@ -75,5 +75,7 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 
 angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("signup/signup.tpl.html",
-    "signup.tpl.html");
+    "signup.tpl.html\n" +
+    "\n" +
+    "Signup form   ");
 }]);

@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.1 - 2016-01-04
+/*! dashevolution - v0.0.1 - 2016-01-05
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -324,7 +324,9 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 
 angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("signup/signup.tpl.html",
-    "signup.tpl.html");
+    "signup.tpl.html\n" +
+    "\n" +
+    "Signup form   ");
 }]);
 
 angular.module('templates.common', []);
