@@ -1,5 +1,6 @@
 angular.module('signup', [
-		'signup.confirm'
+		'signup.confirm',
+		'dashevolution.models.users'
 	])
 
 	.config(['$stateProvider', function($stateProvider){
@@ -15,7 +16,7 @@ angular.module('signup', [
 			});
 	}])
 
-	.controller('SignupCtrl', ['$scope', '$log', function ($scope, $log) {
+	.controller('SignupCtrl', ['$scope', '$log', 'UsersModel', function ($scope, $log, UsersModel) {
 		var signupCtrl = this;
 
 		$log.info('this is the signupCtrl controller');

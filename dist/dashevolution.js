@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.1 - 2016-01-05
+/*! dashevolution - v0.0.1 - 2016-01-06
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -11,6 +11,26 @@ angular.module('layout', [])
 
 	.controller('FooterCtrl', [function () {
 		
+	}])
+;
+angular.module('dashevolution.models.users',[])
+
+	.service('UsersModel', ['$http', '$q', '$log', '$state', 'ENDPOINTS', function ($http, $q, $log, $state, ENDPOINTS) {
+		var model = this,
+			request,
+			user;
+
+		function extract(result) {
+			if(result.data){
+				return result.data;
+			}
+			return result;
+		}
+
+		model.getUser = function() {
+			
+		};
+
 	}])
 ;
 angular.module('services.bitcoin', [])
@@ -267,7 +287,8 @@ angular.module('signup.confirm', [])
 
 ;
 angular.module('signup', [
-		'signup.confirm'
+		'signup.confirm',
+		'dashevolution.models.users'
 	])
 
 	.config(['$stateProvider', function($stateProvider){
@@ -283,7 +304,7 @@ angular.module('signup', [
 			});
 	}])
 
-	.controller('SignupCtrl', ['$scope', '$log', function ($scope, $log) {
+	.controller('SignupCtrl', ['$scope', '$log', 'UsersModel', function ($scope, $log, UsersModel) {
 		var signupCtrl = this;
 
 		$log.info('this is the signupCtrl controller');
