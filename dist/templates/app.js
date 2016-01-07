@@ -2,12 +2,6 @@ angular.module('templates.app', ['common/layout/footer.tpl.html', 'common/layout
 
 angular.module("common/layout/footer.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/layout/footer.tpl.html",
-    "<hr />\n" +
-    "\n" +
-    "<div class=\"container\">\n" +
-    "	\n" +
-    "</div>\n" +
-    "\n" +
     "<footer class=\"footer push-down\">\n" +
     "\n" +
     "	<div class=\"container\">\n" +
@@ -47,7 +41,6 @@ angular.module("common/layout/main.tpl.html", []).run(["$templateCache", functio
     "\n" +
     "<div ui-view=\"subheader\"></div>\n" +
     "\n" +
-    "	\n" +
     "<div class=\"container\">\n" +
     "	<div class=\"main-view\" ui-view=\"main\"></div>\n" +
     "</div>\n" +
