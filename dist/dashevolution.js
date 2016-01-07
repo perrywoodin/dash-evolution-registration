@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.1 - 2016-01-06
+/*! dashevolution - v0.0.1 - 2016-01-07
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -15,7 +15,7 @@ angular.module('layout', [])
 ;
 angular.module('dashevolution.models.users',[])
 
-	.service('UsersModel', ['$http', '$q', '$log', '$state', 'ENDPOINTS', function ($http, $q, $log, $state, ENDPOINTS) {
+	.service('UsersModel', ['$http', '$q', '$log', 'ENDPOINTS', function ($http, $q, $log, ENDPOINTS) {
 		var model = this,
 			request,
 			user;
@@ -27,7 +27,11 @@ angular.module('dashevolution.models.users',[])
 			return result;
 		}
 
-		model.getUser = function() {
+		model.signUp = function() {
+			
+		};
+
+		model.validate = function() {
 			
 		};
 
@@ -304,27 +308,55 @@ angular.module('signup', [
 			});
 	}])
 
-	.controller('SignupCtrl', ['$scope', '$log', 'UsersModel', function ($scope, $log, UsersModel) {
+	.controller('SignupCtrl', ['$scope', '$log', '$uibModal', 'UsersModel', function ($scope, $log, $uibModal, UsersModel) {
 		var signupCtrl = this;
 
-		$log.info('this is the signupCtrl controller');
-
 		// ************************** BEGIN - Private Methods **************************
-		
+		// Launch a modal to fake an email so we can test the confirmation.
+		var spoofEmail = function(user) {
+			signupCtrl.modalInstance = $uibModal.open({
+				templateUrl: 'signup/fake-email-modal.tpl.html',
+				controller: 'FakeEmailCtrl as fakeEmailCtrl',
+				resolve: {
+					User: function(){
+						return user;
+					}
+				}
+			});
+		};
 
+		var signup = function(user) {
+			// This will hit UsersModel.signup() which will be responsible for communicating with the endpoint.
+		};
 		// ************************** //END - Private Methods **************************
 
 
 
 		// ************************** BEGIN - Public Methods **************************
 		signupCtrl.signUp = function() {
-			console.log('newUser',signupCtrl.newUser);
+			// signup(signupCtrl.newUser);
+			spoofEmail(signupCtrl.newUser);
 		};
 		// ************************** //END - Public Methods **************************
 	}])
 
+	// This entire controller is temporary until we can hook up to the backend. 
+	.controller('FakeEmailCtrl', ['$scope', '$state', '$uibModalInstance', 'User', function ($scope, $state, $uibModalInstance, User) {
+		var fakeEmailCtrl = this,
+			user = fakeEmailCtrl.user = User;
+
+		fakeEmailCtrl.confirmEmail = function() {
+			$uibModalInstance.close();
+			$state.go('root.signup.confirm', {code:'1234'});
+		};
+		
+		fakeEmailCtrl.cancel = function(){
+			$uibModalInstance.close();
+		};
+	}])
+
 ;
-angular.module('templates.app', ['common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/signup.tpl.html']);
+angular.module('templates.app', ['common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/fake-email-modal.tpl.html', 'signup/signup.tpl.html']);
 
 angular.module("common/layout/footer.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/layout/footer.tpl.html",
@@ -402,6 +434,29 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 angular.module("signup/confirm/confirm.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("signup/confirm/confirm.tpl.html",
     "confirm.tpl.html");
+}]);
+
+angular.module("signup/fake-email-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("signup/fake-email-modal.tpl.html",
+    "<div class=\"modal-header\">\n" +
+    "	<h3 class=\"modal-title\">Email Mockup</h3>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=\"modal-body\">\n" +
+    "\n" +
+    "	<p class=\"text-muted\">This modal is for demo purposes only. The app will actually send an email to the user requesting confirmation.</p>\n" +
+    "\n" +
+    "	<p><strong>To:</strong> {{fakeEmailCtrl.user.email}}</p>\n" +
+    "\n" +
+    "	<p>You have requested the Dashpay username <strong>{{fakeEmailCtrl.user.username}}</strong>.</p> \n" +
+    "\n" +
+    "	<p>Please confirm your email address by going to <a ng-click=\"fakeEmailCtrl.confirmEmail()\" href=\"\">https://dashevolution.com/</a>.</p>\n" +
+    "	 \n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=\"modal-footer\">	\n" +
+    "	<button class=\"btn btn-default\" ng-click=\"fakeEmailCtrl.cancel()\">Close</button>\n" +
+    "</div>");
 }]);
 
 angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($templateCache) {
