@@ -27,12 +27,12 @@ angular.module('dashevolution.models.users',[])
 			return result;
 		}
 
-		model.signUp = function() {
-			
+		model.signup = function(user) {
+			$log.info('Register user.',user);
 		};
 
-		model.validate = function() {
-			
+		model.validate = function(code) {
+			$log.info('Validation Complete.');
 		};
 
 	}])
@@ -264,7 +264,7 @@ angular.module('signup.confirm', [])
 			});
 	}])
 
-	.controller('ConfirmCtrl', ['$scope', '$log', '$stateParams', '$state', function ($scope, $log, $stateParams, $state) {
+	.controller('ConfirmCtrl', ['$scope', '$log', '$stateParams', '$state', 'UsersModel', function ($scope, $log, $stateParams, $state, UsersModel) {
 		var confirmCtrl = this,
 			code = $stateParams.code;
 
@@ -272,6 +272,8 @@ angular.module('signup.confirm', [])
 		if(!code){
 			$state.go('root.signup');
 		}
+
+		UsersModel.validate(code);
 
 		// ************************** BEGIN - Private Methods **************************
 
@@ -323,7 +325,7 @@ angular.module('signup', [
 		};
 
 		var signup = function(user) {
-			// This will hit UsersModel.signup() which will be responsible for communicating with the endpoint.
+			UsersModel.signup(user);
 		};
 		// ************************** //END - Private Methods **************************
 
@@ -331,7 +333,7 @@ angular.module('signup', [
 
 		// ************************** BEGIN - Public Methods **************************
 		signupCtrl.signUp = function() {
-			// signup(signupCtrl.newUser);
+			signup(signupCtrl.newUser);
 			spoofEmail(signupCtrl.newUser);
 		};
 		// ************************** //END - Public Methods **************************

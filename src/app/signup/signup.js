@@ -34,7 +34,7 @@ angular.module('signup', [
 		};
 
 		var signup = function(user) {
-			// This will hit UsersModel.signup() which will be responsible for communicating with the endpoint.
+			UsersModel.signup(user);
 		};
 		// ************************** //END - Private Methods **************************
 
@@ -42,7 +42,7 @@ angular.module('signup', [
 
 		// ************************** BEGIN - Public Methods **************************
 		signupCtrl.signUp = function() {
-			// signup(signupCtrl.newUser);
+			signup(signupCtrl.newUser);
 			spoofEmail(signupCtrl.newUser);
 		};
 		// ************************** //END - Public Methods **************************

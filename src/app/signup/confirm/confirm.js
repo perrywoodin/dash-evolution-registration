@@ -13,7 +13,7 @@ angular.module('signup.confirm', [])
 			});
 	}])
 
-	.controller('ConfirmCtrl', ['$scope', '$log', '$stateParams', '$state', function ($scope, $log, $stateParams, $state) {
+	.controller('ConfirmCtrl', ['$scope', '$log', '$stateParams', '$state', 'UsersModel', function ($scope, $log, $stateParams, $state, UsersModel) {
 		var confirmCtrl = this,
 			code = $stateParams.code;
 
@@ -21,6 +21,8 @@ angular.module('signup.confirm', [])
 		if(!code){
 			$state.go('root.signup');
 		}
+
+		UsersModel.validate(code);
 
 		// ************************** BEGIN - Private Methods **************************
 

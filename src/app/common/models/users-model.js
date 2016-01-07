@@ -12,12 +12,12 @@ angular.module('dashevolution.models.users',[])
 			return result;
 		}
 
-		model.signUp = function() {
-			
+		model.signup = function(user) {
+			$log.info('Register user.',user);
 		};
 
-		model.validate = function() {
-			
+		model.validate = function(code) {
+			$log.info('Validation Complete.');
 		};
 
 	}])
