@@ -60,13 +60,13 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "<p>Radio telescope explorations Vangelis. Tingling of the spine explorations permanence of the stars billions upon billions Apollonius of Perga white dwarf radio telescope! Euclid tesseract bits of moving fluff encyclopaedia galactica finite but unbounded? Bits of moving fluff, finite but unbounded are creatures of the cosmos! Muse about, Cambrian explosion, encyclopaedia galactica the ash of stellar alchemy. Corpus callosum! Great turbulent clouds extraordinary claims require extraordinary evidence a very small stage in a vast cosmic arena Vangelis Hypatia star stuff harvesting star light.</p>\n" +
     "\n" +
     "<div class=\"row push-down\">\n" +
-    "	<div class=\"col-sm-4 text-center\">\n" +
+    "	<div class=\"col-xs-4 text-center\">\n" +
     "		<button class=\"btn btn-primary\" ui-sref=\"root.signup\">Signup</button>\n" +
     "	</div>\n" +
-    "	<div class=\"col-sm-4 text-center\">\n" +
+    "	<div class=\"col-xs-4 text-center\">\n" +
     "		<button class=\"btn btn-primary\" ui-sref=\"root.converters\">Search Converters</button>\n" +
     "	</div>\n" +
-    "	<div class=\"col-sm-4 text-center\">\n" +
+    "	<div class=\"col-xs-4 text-center\">\n" +
     "		<button class=\"btn btn-primary\" ui-sref=\"root.documentation\">Documentation</button>\n" +
     "	</div>\n" +
     "\n" +
