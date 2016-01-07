@@ -22,9 +22,6 @@ angular.module('signup.confirm', [])
 			$state.go('root.signup');
 		}
 
-		$log.info('this is the confirmCtrl controller');
-		$log.info('validation code',code);
-
 		// ************************** BEGIN - Private Methods **************************
 
 

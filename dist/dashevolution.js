@@ -273,9 +273,6 @@ angular.module('signup.confirm', [])
 			$state.go('root.signup');
 		}
 
-		$log.info('this is the confirmCtrl controller');
-		$log.info('validation code',code);
-
 		// ************************** BEGIN - Private Methods **************************
 
 
@@ -433,7 +430,7 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 
 angular.module("signup/confirm/confirm.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("signup/confirm/confirm.tpl.html",
-    "confirm.tpl.html");
+    "<p>Thank you for validating your Dashpay account. Now get out there an preach the gospel fo Dash!</p>");
 }]);
 
 angular.module("signup/fake-email-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -450,7 +447,7 @@ angular.module("signup/fake-email-modal.tpl.html", []).run(["$templateCache", fu
     "\n" +
     "	<p>You have requested the Dashpay username <strong>{{fakeEmailCtrl.user.username}}</strong>.</p> \n" +
     "\n" +
-    "	<p>Please confirm your email address by going to <a ng-click=\"fakeEmailCtrl.confirmEmail()\" href=\"\">https://dashevolution.com/</a>.</p>\n" +
+    "	<p>Please validate your account by going to <a ng-click=\"fakeEmailCtrl.confirmEmail()\" href=\"\">https://dashevolution.com/</a>.</p>\n" +
     "	 \n" +
     "</div>\n" +
     "\n" +
