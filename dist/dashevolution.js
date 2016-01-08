@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.1 - 2016-01-07
+/*! dashevolution - v0.0.1 - 2016-01-08
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -15,7 +15,7 @@ angular.module('layout', [])
 ;
 angular.module('dashevolution.models.users',[])
 
-	.service('UsersModel', ['$http', '$q', '$log', 'ENDPOINTS', function ($http, $q, $log, ENDPOINTS) {
+	.service('UsersModel', ['$rootScope', '$http', '$q', '$log', 'ENDPOINTS', function ($rootScope, $http, $q, $log, ENDPOINTS) {
 		var model = this,
 			request,
 			user;
@@ -155,6 +155,7 @@ angular.module('dashevolution', [
 	'ui.router',
 	'ui.bootstrap',
 	'ngSanitize',
+	'ngWebsocket',
 	// Set CONSTANT
 	'config',
 	// App modules
@@ -194,7 +195,18 @@ angular.module('dashevolution', [
 		$urlRouterProvider.otherwise('/home'); 
 	}])
 
-	.run(['$rootScope', '$state', function () {
+	.run(['$websocket', function ($websocket) {
+		var ws = $websocket.$new({
+			url: 'ws://localhost:12345',
+			mock: true
+		});
+
+		ws.$on('$open', function () {
+			ws.$emit('test_ws', 'Mock websocket is working.');
+		})
+			.$on('test_ws', function (message) {
+				console.log(message);
+			});
 
 	}])
 
@@ -478,7 +490,8 @@ angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($te
     "		</div>\n" +
     "	</div>\n" +
     "</form>\n" +
-    "");
+    "\n" +
+    "<button ng-click=\"signupCtrl.test()\">test</button>");
 }]);
 
 angular.module('templates.common', []);

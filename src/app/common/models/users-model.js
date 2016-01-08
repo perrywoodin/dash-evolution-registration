@@ -1,6 +1,6 @@
 angular.module('dashevolution.models.users',[])
 
-	.service('UsersModel', ['$http', '$q', '$log', 'ENDPOINTS', function ($http, $q, $log, ENDPOINTS) {
+	.service('UsersModel', ['$rootScope', '$http', '$q', '$log', 'ENDPOINTS', function ($rootScope, $http, $q, $log, ENDPOINTS) {
 		var model = this,
 			request,
 			user;

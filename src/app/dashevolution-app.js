@@ -2,6 +2,7 @@ angular.module('dashevolution', [
 	'ui.router',
 	'ui.bootstrap',
 	'ngSanitize',
+	'ngWebsocket',
 	// Set CONSTANT
 	'config',
 	// App modules
@@ -41,7 +42,18 @@ angular.module('dashevolution', [
 		$urlRouterProvider.otherwise('/home'); 
 	})
 
-	.run(['$rootScope', '$state', function () {
+	.run(['$websocket', function ($websocket) {
+		var ws = $websocket.$new({
+			url: 'ws://localhost:12345',
+			mock: true
+		});
+
+		ws.$on('$open', function () {
+			ws.$emit('test_ws', 'Mock websocket is working.');
+		})
+			.$on('test_ws', function (message) {
+				console.log(message);
+			});
 
 	}])
 

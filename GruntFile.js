@@ -150,6 +150,7 @@ module.exports = function (grunt) {
 						'bower_components/a0-angular-storage/dist/angular-storage.min.js',
 						'bower_components/moment/moment.js',
 						'bower_components/angular-sanitize/angular-sanitize.min.js',
+						'bower_components/ng-websocket/ng-websocket.js',
 						'vendor/bitcoinjs-lib-dash/bitcoinjs.min.js'
 					],
 				dest: '<%= distdir %>/angular.js'

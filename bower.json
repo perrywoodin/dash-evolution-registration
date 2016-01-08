@@ -21,7 +21,8 @@
     "angular-sanitize": "~1.4.2",
     "angular-ui-router": "~0.2.13",
     "bootstrap": "~3.3.1",
-    "moment": "~2.10.6"
+    "moment": "~2.10.6",
+    "ng-websocket": "~0.2.1"
   },
   "resolutions": {
     "bootstrap": "~3.3.1",
