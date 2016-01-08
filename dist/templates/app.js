@@ -120,7 +120,5 @@ angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($te
     "			<button ng-click=\"signupCtrl.signUp()\" ng-disabled=\"form.$invalid\" type=\"submit\" class=\"btn btn-primary\">Signup</button>\n" +
     "		</div>\n" +
     "	</div>\n" +
-    "</form>\n" +
-    "\n" +
-    "<button ng-click=\"signupCtrl.test()\">test</button>");
+    "</form>");
 }]);

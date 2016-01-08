@@ -54,7 +54,6 @@ angular.module('dashevolution', [
 			.$on('test_ws', function (message) {
 				console.log(message);
 			});
-
 	}])
 
 	.controller('RootCtrl', ['$rootScope', '$log', function ($rootScope, $log) {
