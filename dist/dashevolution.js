@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.1 - 2016-01-08
+/*! dashevolution - v0.0.1 - 2016-01-09
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -373,7 +373,7 @@ angular.module("common/layout/footer.tpl.html", []).run(["$templateCache", funct
     "<footer class=\"footer push-down\">\n" +
     "\n" +
     "	<div class=\"container\">\n" +
-    "		<p class=\"text-muted text-center\"><small>Dash Evolution</small></p>\n" +
+    "		\n" +
     "	</div>\n" +
     "\n" +
     "</footer>");

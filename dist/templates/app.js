@@ -5,7 +5,7 @@ angular.module("common/layout/footer.tpl.html", []).run(["$templateCache", funct
     "<footer class=\"footer push-down\">\n" +
     "\n" +
     "	<div class=\"container\">\n" +
-    "		<p class=\"text-muted text-center\"><small>Dash Evolution</small></p>\n" +
+    "		\n" +
     "	</div>\n" +
     "\n" +
     "</footer>");
