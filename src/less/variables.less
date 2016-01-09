@@ -27,6 +27,11 @@
 
 //** Background color for `<body>`.
 @body-bg:               #fff;
+
+body {
+                        background-image: url("../src/assets/img/bg.png");
+                        background-size: 100% 100%;
+}
 //** Global text color on `<body>`.
 @text-color:            @gray-dark;
 
@@ -364,13 +369,14 @@
 @navbar-padding-vertical:          ((@navbar-height - @line-height-computed) / 2);
 @navbar-collapse-max-height:       340px;
 
-@navbar-default-color:             #777;
-@navbar-default-bg:                #f8f8f8;
-@navbar-default-border:            darken(@navbar-default-bg, 6.5%);
+@navbar-default-color:             #fff;
+@navbar-default-bg:                rgba(30, 117, 180,0.9);
+@navbar-default-border:            red;
+@navbar-default-border-bottom:     red;
 
 // Navbar links
-@navbar-default-link-color:                #777;
-@navbar-default-link-hover-color:          #333;
+@navbar-default-link-color:                #fff;
+@navbar-default-link-hover-color:          #6DAEF7;
 @navbar-default-link-hover-bg:             transparent;
 @navbar-default-link-active-color:         #555;
 @navbar-default-link-active-bg:            darken(@navbar-default-bg, 6.5%);
