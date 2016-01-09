@@ -3,11 +3,7 @@ angular.module('templates.app', ['common/layout/footer.tpl.html', 'common/layout
 angular.module("common/layout/footer.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/layout/footer.tpl.html",
     "<footer class=\"footer push-down\">\n" +
-    "\n" +
-    "	<div class=\"container\">\n" +
-    "		\n" +
-    "	</div>\n" +
-    "\n" +
+    "	<div class=\"container\"></div>\n" +
     "</footer>");
 }]);
 
@@ -25,11 +21,16 @@ angular.module("common/layout/header.tpl.html", []).run(["$templateCache", funct
     "			<a ui-sref=\"root.home\" class=\"navbar-brand\">Dash Evolution</a>\n" +
     "		</div>\n" +
     "		<div id=\"navbar\" class=\"collapse navbar-collapse\">\n" +
-    "\n" +
     "			<ul class=\"nav navbar-nav navbar-right\">\n" +
-    "				<li><a ui-sref=\"root.home\">Home</a></li>\n" +
+    "				<li class=\"dropdown\">\n" +
+    "					<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">Menu <span class=\"caret\"></span></a>\n" +
+    "					<ul class=\"dropdown-menu\" role=\"menu\">\n" +
+    "						<li><a ui-sref=\"root.signup\">Signup</a></li>\n" +
+    "						<li><a ui-sref=\"root.converters\">Search Converters</a></li>\n" +
+    "						<li><a ui-sref=\"root.documentation\">Documentation</a></li>\n" +
+    "					</ul>\n" +
+    "				</li>\n" +
     "			</ul>\n" +
-    "			\n" +
     "		</div>\n" +
     "	</div>\n" +
     "</nav>");
