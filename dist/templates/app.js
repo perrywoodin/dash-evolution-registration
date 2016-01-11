@@ -18,13 +18,14 @@ angular.module("common/layout/header.tpl.html", []).run(["$templateCache", funct
     "				<span class=\"icon-bar\"></span>\n" +
     "				<span class=\"icon-bar\"></span>\n" +
     "			</button>\n" +
-    "			<a ui-sref=\"root.home\" class=\"navbar-brand\">Dash Evolution</a>\n" +
     "		</div>\n" +
     "		<div id=\"navbar\" class=\"collapse navbar-collapse\">\n" +
     "			<ul class=\"nav navbar-nav navbar-right\">\n" +
     "				<li class=\"dropdown\">\n" +
     "					<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">Menu <span class=\"caret\"></span></a>\n" +
     "					<ul class=\"dropdown-menu\" role=\"menu\">\n" +
+    "						<li><a ui-sref=\"root.home\">Home</a></li>\n" +
+    "						<li class=\"divider\"></li>\n" +
     "						<li><a ui-sref=\"root.signup\">Signup</a></li>\n" +
     "						<li><a ui-sref=\"root.converters\">Search Converters</a></li>\n" +
     "						<li><a ui-sref=\"root.documentation\">Documentation</a></li>\n" +
