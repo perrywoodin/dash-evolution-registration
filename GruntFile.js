@@ -29,7 +29,8 @@ module.exports = function (grunt) {
 				dest: 'dist/config.js',
 				constants: {
 					ENDPOINTS: {
-						'ROOT':'http://localhost:8080/'
+						'ROOT':'http://localhost:8080/',
+						'WS': 'ws://echo.websocket.org/'
 					},
 					debug: true
 				}
@@ -37,14 +38,16 @@ module.exports = function (grunt) {
 			dev: {
 				constants: {
 					ENDPOINTS: {
-						'ROOT':'http://localhost:8080/'
+						'ROOT':'http://localhost:8080/',
+						'WS': 'ws://echo.websocket.org/'
 					}
 				}
 			},
 			prod: {
 				constants: {
 					ENDPOINTS: {
-						'ROOT':'http://localhost:8080/'
+						'ROOT':'http://localhost:8080/',
+						'WS': 'ws://echo.websocket.org/'
 					}
 				}
 			},

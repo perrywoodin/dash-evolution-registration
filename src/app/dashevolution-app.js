@@ -42,18 +42,8 @@ angular.module('dashevolution', [
 		$urlRouterProvider.otherwise('/home'); 
 	})
 
-	.run(['$websocket', function ($websocket) {
-		var ws = $websocket.$new({
-			url: 'ws://localhost:12345',
-			mock: true
-		});
+	.run([ function () {
 
-		ws.$on('$open', function () {
-			ws.$emit('test_ws', 'Mock websocket is working.');
-		})
-			.$on('test_ws', function (message) {
-				console.log(message);
-			});
 	}])
 
 	.controller('RootCtrl', ['$rootScope', '$log', function ($rootScope, $log) {

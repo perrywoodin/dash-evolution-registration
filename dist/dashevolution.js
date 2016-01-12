@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.1 - 2016-01-10
+/*! dashevolution - v0.0.1 - 2016-01-12
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -15,10 +15,42 @@ angular.module('layout', [])
 ;
 angular.module('dashevolution.models.users',[])
 
-	.service('UsersModel', ['$rootScope', '$http', '$q', '$log', 'ENDPOINTS', function ($rootScope, $http, $q, $log, ENDPOINTS) {
+	.service('UsersModel', ['$rootScope', '$http', '$q', '$log', '$websocket', '$timeout', 'ENDPOINTS', function ($rootScope, $http, $q, $log, $websocket, $timeout, ENDPOINTS) {
 		var model = this,
 			request,
 			user;
+
+		var ws = $websocket.$new({
+			url: ENDPOINTS.WS,
+			protocols: []
+		});	
+
+		ws.$on('$open', function () {
+			$log.info('Websocket is open: ', ENDPOINTS.WS);
+		});
+
+		function inviteUser(user) {
+			var data = {
+				"command" : "invite_user",
+				"from_uid" : "UID",
+				"to_uid" : user.username,
+				"to_name" : null,
+				"to_email" : user.email, 
+				"to_pubkey" : user.rootPubkey, 
+				"signature": ""			
+			};
+			ws.$emit('invite_user',data);
+
+			ws.$on('invite_user', function (response) {
+				$log.info(response);
+			});
+		}
+
+		function validateUser() {
+			ws.$on('validate_account', function (response) {
+				$log.info(response);
+			});
+		}
 
 		function extract(result) {
 			if(result.data){
@@ -28,10 +60,12 @@ angular.module('dashevolution.models.users',[])
 		}
 
 		model.signup = function(user) {
+			inviteUser(user);
 			$log.info('Register user.',user);
 		};
 
 		model.validate = function(code) {
+			validateUser();
 			$log.info('Validation Complete.');
 		};
 
@@ -195,18 +229,8 @@ angular.module('dashevolution', [
 		$urlRouterProvider.otherwise('/home'); 
 	}])
 
-	.run(['$websocket', function ($websocket) {
-		var ws = $websocket.$new({
-			url: 'ws://localhost:12345',
-			mock: true
-		});
+	.run([ function () {
 
-		ws.$on('$open', function () {
-			ws.$emit('test_ws', 'Mock websocket is working.');
-		})
-			.$on('test_ws', function (message) {
-				console.log(message);
-			});
 	}])
 
 	.controller('RootCtrl', ['$rootScope', '$log', function ($rootScope, $log) {
