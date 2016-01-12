@@ -111,12 +111,12 @@ angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($te
     "			<input ng-model=\"signupCtrl.newUser.email\" name=\"email\" type=\"email\" class=\"form-control\" id=\"inputEmail\" placeholder=\"Email\" required>\n" +
     "		</div>\n" +
     "	</div>\n" +
-    "	<div class=\"form-group\" ng-class=\"{'has-error':form.rootPubkey.$invalid && form.rootPubkey.$dirty, 'has-success':form.rootPubkey.$valid}\">\n" +
+    "	<!-- <div class=\"form-group\" ng-class=\"{'has-error':form.rootPubkey.$invalid && form.rootPubkey.$dirty, 'has-success':form.rootPubkey.$valid}\">\n" +
     "		<label for=\"inputPubkey\" class=\"col-sm-2 control-label\">Root Pubkey</label>\n" +
     "		<div class=\"col-sm-10\">\n" +
     "			<input ng-model=\"signupCtrl.newUser.rootPubkey\" name=\"rootPubkey\" type=\"text\" class=\"form-control\" id=\"inputPubkey\" placeholder=\"Root Pubkey\" required>\n" +
     "		</div>\n" +
-    "	</div>\n" +
+    "	</div> -->\n" +
     "	<div class=\"form-group\">\n" +
     "		<div class=\"col-sm-offset-2 col-sm-10\">\n" +
     "			<button ng-click=\"signupCtrl.signUp()\" ng-disabled=\"form.$invalid\" type=\"submit\" class=\"btn btn-primary\">Signup</button>\n" +

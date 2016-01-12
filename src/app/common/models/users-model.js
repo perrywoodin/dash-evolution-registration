@@ -17,11 +17,11 @@ angular.module('dashevolution.models.users',[])
 		function inviteUser(user) {
 			var data = {
 				"command" : "invite_user",
-				"from_uid" : "UID",
+				"from_uid" : "dashevolution_com",
 				"to_uid" : user.username,
 				"to_name" : null,
 				"to_email" : user.email, 
-				"to_pubkey" : user.rootPubkey, 
+				"to_pubkey" : null, 
 				"signature": ""			
 			};
 			ws.$emit('invite_user',data);

@@ -32,11 +32,11 @@ angular.module('dashevolution.models.users',[])
 		function inviteUser(user) {
 			var data = {
 				"command" : "invite_user",
-				"from_uid" : "UID",
+				"from_uid" : "dashevolution_com",
 				"to_uid" : user.username,
 				"to_name" : null,
 				"to_email" : user.email, 
-				"to_pubkey" : user.rootPubkey, 
+				"to_pubkey" : null, 
 				"signature": ""			
 			};
 			ws.$emit('invite_user',data);
@@ -503,12 +503,12 @@ angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($te
     "			<input ng-model=\"signupCtrl.newUser.email\" name=\"email\" type=\"email\" class=\"form-control\" id=\"inputEmail\" placeholder=\"Email\" required>\n" +
     "		</div>\n" +
     "	</div>\n" +
-    "	<div class=\"form-group\" ng-class=\"{'has-error':form.rootPubkey.$invalid && form.rootPubkey.$dirty, 'has-success':form.rootPubkey.$valid}\">\n" +
+    "	<!-- <div class=\"form-group\" ng-class=\"{'has-error':form.rootPubkey.$invalid && form.rootPubkey.$dirty, 'has-success':form.rootPubkey.$valid}\">\n" +
     "		<label for=\"inputPubkey\" class=\"col-sm-2 control-label\">Root Pubkey</label>\n" +
     "		<div class=\"col-sm-10\">\n" +
     "			<input ng-model=\"signupCtrl.newUser.rootPubkey\" name=\"rootPubkey\" type=\"text\" class=\"form-control\" id=\"inputPubkey\" placeholder=\"Root Pubkey\" required>\n" +
     "		</div>\n" +
-    "	</div>\n" +
+    "	</div> -->\n" +
     "	<div class=\"form-group\">\n" +
     "		<div class=\"col-sm-offset-2 col-sm-10\">\n" +
     "			<button ng-click=\"signupCtrl.signUp()\" ng-disabled=\"form.$invalid\" type=\"submit\" class=\"btn btn-primary\">Signup</button>\n" +
