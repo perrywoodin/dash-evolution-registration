@@ -80,15 +80,13 @@ angular.module("signup/fake-email-modal.tpl.html", []).run(["$templateCache", fu
     "</div>\n" +
     "\n" +
     "<div class=\"modal-body\">\n" +
-    "\n" +
     "	<p class=\"text-muted\">This modal is for demo purposes only. The app will actually send an email to the user requesting confirmation.</p>\n" +
     "\n" +
-    "	<p><strong>To:</strong> {{fakeEmailCtrl.user.email}}</p>\n" +
+    "	<p><strong>To:</strong> {{fakeEmailCtrl.signupResponse.to_email}}</p>\n" +
     "\n" +
-    "	<p>You have requested the Dashpay username <strong>{{fakeEmailCtrl.user.username}}</strong>.</p> \n" +
+    "	<p>You have requested the Dashpay username <strong>{{fakeEmailCtrl.signupResponse.to_uid}}</strong>.</p> \n" +
     "\n" +
-    "	<p>Please validate your account by going to <a ng-click=\"fakeEmailCtrl.confirmEmail()\" href=\"\">https://dashevolution.com/</a>.</p>\n" +
-    "	 \n" +
+    "	<p>Please validate your account by going to <a ng-click=\"fakeEmailCtrl.confirmEmail()\" href=\"\">https://dashevolution.com/</a>.</p> \n" +
     "</div>\n" +
     "\n" +
     "<div class=\"modal-footer\">	\n" +

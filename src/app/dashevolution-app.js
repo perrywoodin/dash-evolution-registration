@@ -2,10 +2,10 @@ angular.module('dashevolution', [
 	'ui.router',
 	'ui.bootstrap',
 	'ngSanitize',
-	'ngWebsocket',
 	// Set CONSTANT
 	'config',
 	// App modules
+	'services',
 	'layout',
 	'home',
 	'signup',

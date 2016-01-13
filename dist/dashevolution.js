@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.1 - 2016-01-12
+/*! dashevolution - v0.0.2 - 2016-01-12
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -13,44 +13,12 @@ angular.module('layout', [])
 		
 	}])
 ;
-angular.module('dashevolution.models.users',[])
+angular.module('dashevolution.models.user',[])
 
-	.service('UsersModel', ['$rootScope', '$http', '$q', '$log', '$websocket', '$timeout', 'ENDPOINTS', function ($rootScope, $http, $q, $log, $websocket, $timeout, ENDPOINTS) {
+	.service('UserModel', ['$http', '$q', '$log', 'ENDPOINTS', function ($http, $q, $log, ENDPOINTS) {
 		var model = this,
 			request,
 			user;
-
-		var ws = $websocket.$new({
-			url: ENDPOINTS.WS,
-			protocols: []
-		});	
-
-		ws.$on('$open', function () {
-			$log.info('Websocket is open: ', ENDPOINTS.WS);
-		});
-
-		function inviteUser(user) {
-			var data = {
-				"command" : "invite_user",
-				"from_uid" : "dashevolution_com",
-				"to_uid" : user.username,
-				"to_name" : null,
-				"to_email" : user.email, 
-				"to_pubkey" : null, 
-				"signature": ""			
-			};
-			ws.$emit('invite_user',data);
-
-			ws.$on('invite_user', function (response) {
-				$log.info(response);
-			});
-		}
-
-		function validateUser() {
-			ws.$on('validate_account', function (response) {
-				$log.info(response);
-			});
-		}
 
 		function extract(result) {
 			if(result.data){
@@ -59,14 +27,8 @@ angular.module('dashevolution.models.users',[])
 			return result;
 		}
 
-		model.signup = function(user) {
-			inviteUser(user);
-			$log.info('Register user.',user);
-		};
+		model.getUser = function(id) {
 
-		model.validate = function(code) {
-			validateUser();
-			$log.info('Validation Complete.');
 		};
 
 	}])
@@ -159,10 +121,119 @@ angular.module('services.httpResponseInterceptor', [])
 ;
 
 angular.module('services', [
+	'services.user',
 	'services.httpResponseInterceptor',
 	'services.httpRequestTracker',	
 	'services.bitcoin'
 ]);
+angular.module('services.user',[
+		'dashevolution.models.user'
+	])
+
+	.service('UserService', ['$rootScope', '$q', '$log', '$timeout', 'ENDPOINTS', function ($rootScope, $q, $log, $timeout, ENDPOINTS) {
+		var service = this,
+			callbacks = {},
+			currentCallbackId = 0,
+			ws = new WebSocket(ENDPOINTS.WS);
+
+		ws.onopen = function(){
+			$log.info("Socket opened:", ENDPOINTS.WS);
+		};
+
+		ws.onmessage = function(message) {
+			listener(JSON.parse(message.data));
+		};
+
+		function sendRequest(request) {
+			var defer = $q.defer();
+			var callbackId = getCallbackId();
+			callbacks[callbackId] = {
+				time: new Date(),
+				cb:defer
+			};
+			request.callback_id = callbackId;
+			//$log.info('Sending request', request);
+			ws.send(JSON.stringify(request));
+			return defer.promise;
+		}
+
+		function listener(data) {
+			var messageObj = data;
+			//$log.info("Received from websocket: ", messageObj);
+			// If an object exists with callback_id in our callbacks object, resolve it
+			if(callbacks.hasOwnProperty(messageObj.callback_id)) {
+				//$log.info(callbacks[messageObj.callback_id]);
+				$rootScope.$apply(callbacks[messageObj.callback_id].cb.resolve(messageObj.data));
+				delete callbacks[messageObj.callbackID];
+			}
+		}
+
+		// This creates a new callback ID for a request
+		function getCallbackId() {
+			currentCallbackId += 1;
+			if(currentCallbackId > 10000) {
+				currentCallbackId = 0;
+			}
+			return currentCallbackId;
+		}
+
+
+
+
+		function inviteUser(user) {
+			var request = {};
+			var data = {
+				"command" : "invite_user",
+				"from_uid" : "dashevolution",
+				"to_uid" : user.username,
+				"to_name" : "",
+				"to_email" : user.email, 
+				"to_pubkey" : "", 
+				"signature": ""	
+			};
+
+			request = {
+				"object" : "dapi_command",
+				"data": data
+			};
+			
+			var promise = sendRequest(request);
+			return promise;
+		}
+
+		function validateUser(from,to,code) {
+			var request = {};
+			var data = {
+				"command" : "validate_account",
+				"from_uid" : from,
+				"to_uid" : to,
+				"to_challenge_code" : code,
+				"signature": ""
+			};
+
+			request = {
+				"object" : "dapi_command",
+				"data": data
+			};
+			
+			var promise = sendRequest(request);
+			return promise;
+		}
+
+		service.signup = function(user) {
+			return inviteUser(user).then(function(response){
+				return response;
+			});
+		};
+
+		service.validate = function(from,to,code) {
+			return validateUser(from,to,code).then(function(response){
+				return response;
+			});
+		};
+
+	}])
+;
 angular.module('converters', [])
 
 	.config(['$stateProvider', function($stateProvider){
@@ -189,10 +260,10 @@ angular.module('dashevolution', [
 	'ui.router',
 	'ui.bootstrap',
 	'ngSanitize',
-	'ngWebsocket',
 	// Set CONSTANT
 	'config',
 	// App modules
+	'services',
 	'layout',
 	'home',
 	'signup',
@@ -289,7 +360,7 @@ angular.module('signup.confirm', [])
 	.config(['$stateProvider', function($stateProvider){
 		$stateProvider
 			.state('root.signup.confirm', {
-				url: '/confirm/:code',
+				url: '/confirm/:from/:to/:code',
 				views: {
 					'main@root': {
 						templateUrl: 'signup/confirm/confirm.tpl.html',
@@ -299,34 +370,22 @@ angular.module('signup.confirm', [])
 			});
 	}])
 
-	.controller('ConfirmCtrl', ['$scope', '$log', '$stateParams', '$state', 'UsersModel', function ($scope, $log, $stateParams, $state, UsersModel) {
+	.controller('ConfirmCtrl', ['$scope', '$log', '$stateParams', '$state', 'UserService', function ($scope, $log, $stateParams, $state, UserService) {
 		var confirmCtrl = this,
+			from = $stateParams.from,
+			to = $stateParams.to,
 			code = $stateParams.code;
 
-		// If the code is not accessible from the URL, redirect to the signup page.
-		if(!code){
-			$state.go('root.signup');
-		}
 
-		UsersModel.validate(code);
+		UserService.validate(from,to,code).then(function(response){
+			$log.log('validate() response', response);
+		});
 
-		// ************************** BEGIN - Private Methods **************************
-
-
-		// ************************** //END - Private Methods **************************
-
-
-
-
-		// ************************** BEGIN - Public Methods **************************
-		
-		// ************************** //END - Public Methods **************************
 	}])
 
 ;
 angular.module('signup', [
-		'signup.confirm',
-		'dashevolution.models.users'
+		'signup.confirm'
 	])
 
 	.config(['$stateProvider', function($stateProvider){
@@ -342,25 +401,28 @@ angular.module('signup', [
 			});
 	}])
 
-	.controller('SignupCtrl', ['$scope', '$log', '$uibModal', 'UsersModel', function ($scope, $log, $uibModal, UsersModel) {
+	.controller('SignupCtrl', ['$scope', '$log', '$uibModal', 'UserService', function ($scope, $log, $uibModal, UserService) {
 		var signupCtrl = this;
 
 		// ************************** BEGIN - Private Methods **************************
 		// Launch a modal to fake an email so we can test the confirmation.
-		var spoofEmail = function(user) {
+		var spoofEmail = function(signupResponse) {
 			signupCtrl.modalInstance = $uibModal.open({
 				templateUrl: 'signup/fake-email-modal.tpl.html',
 				controller: 'FakeEmailCtrl as fakeEmailCtrl',
 				resolve: {
-					User: function(){
-						return user;
+					SignupResponse: function(){
+						return signupResponse;
 					}
 				}
 			});
 		};
 
 		var signup = function(user) {
-			UsersModel.signup(user);
+			UserService.signup(user).then(function(response){
+				$log.log('singup() response', response);
+				spoofEmail(response);
+			});
 		};
 		// ************************** //END - Private Methods **************************
 
@@ -369,19 +431,20 @@ angular.module('signup', [
 		// ************************** BEGIN - Public Methods **************************
 		signupCtrl.signUp = function() {
 			signup(signupCtrl.newUser);
-			spoofEmail(signupCtrl.newUser);
 		};
 		// ************************** //END - Public Methods **************************
 	}])
 
 	// This entire controller is temporary until we can hook up to the backend. 
-	.controller('FakeEmailCtrl', ['$scope', '$state', '$uibModalInstance', 'User', function ($scope, $state, $uibModalInstance, User) {
+	.controller('FakeEmailCtrl', ['$scope', '$state', '$log', '$uibModalInstance', 'SignupResponse', function ($scope, $state, $log, $uibModalInstance, SignupResponse) {
 		var fakeEmailCtrl = this,
-			user = fakeEmailCtrl.user = User;
+			signupResponse = fakeEmailCtrl.signupResponse = SignupResponse;
+
+			$log.log('signupResponse',signupResponse);
 
 		fakeEmailCtrl.confirmEmail = function() {
 			$uibModalInstance.close();
-			$state.go('root.signup.confirm', {code:'1234'});
+			$state.go('root.signup.confirm', {from:signupResponse.from_uid,to:signupResponse.to_uid,code:signupResponse.to_challenge_code});
 		};
 		
 		fakeEmailCtrl.cancel = function(){
@@ -472,15 +535,13 @@ angular.module("signup/fake-email-modal.tpl.html", []).run(["$templateCache", fu
     "</div>\n" +
     "\n" +
     "<div class=\"modal-body\">\n" +
-    "\n" +
     "	<p class=\"text-muted\">This modal is for demo purposes only. The app will actually send an email to the user requesting confirmation.</p>\n" +
     "\n" +
-    "	<p><strong>To:</strong> {{fakeEmailCtrl.user.email}}</p>\n" +
+    "	<p><strong>To:</strong> {{fakeEmailCtrl.signupResponse.to_email}}</p>\n" +
     "\n" +
-    "	<p>You have requested the Dashpay username <strong>{{fakeEmailCtrl.user.username}}</strong>.</p> \n" +
+    "	<p>You have requested the Dashpay username <strong>{{fakeEmailCtrl.signupResponse.to_uid}}</strong>.</p> \n" +
     "\n" +
-    "	<p>Please validate your account by going to <a ng-click=\"fakeEmailCtrl.confirmEmail()\" href=\"\">https://dashevolution.com/</a>.</p>\n" +
-    "	 \n" +
+    "	<p>Please validate your account by going to <a ng-click=\"fakeEmailCtrl.confirmEmail()\" href=\"\">https://dashevolution.com/</a>.</p> \n" +
     "</div>\n" +
     "\n" +
     "<div class=\"modal-footer\">	\n" +

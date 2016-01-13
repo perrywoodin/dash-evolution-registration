@@ -3,15 +3,13 @@
 </div>
 
 <div class="modal-body">
-
 	<p class="text-muted">This modal is for demo purposes only. The app will actually send an email to the user requesting confirmation.</p>
 
-	<p><strong>To:</strong> {{fakeEmailCtrl.user.email}}</p>
+	<p><strong>To:</strong> {{fakeEmailCtrl.signupResponse.to_email}}</p>
 
-	<p>You have requested the Dashpay username <strong>{{fakeEmailCtrl.user.username}}</strong>.</p> 
+	<p>You have requested the Dashpay username <strong>{{fakeEmailCtrl.signupResponse.to_uid}}</strong>.</p> 
 
-	<p>Please validate your account by going to <a ng-click="fakeEmailCtrl.confirmEmail()" href="">https://dashevolution.com/</a>.</p>
-	 
+	<p>Please validate your account by going to <a ng-click="fakeEmailCtrl.confirmEmail()" href="">https://dashevolution.com/</a>.</p> 
 </div>
 
 <div class="modal-footer">	

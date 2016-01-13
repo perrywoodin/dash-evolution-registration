@@ -1,6 +1,5 @@
 angular.module('signup', [
-		'signup.confirm',
-		'dashevolution.models.users'
+		'signup.confirm'
 	])
 
 	.config(['$stateProvider', function($stateProvider){
@@ -16,25 +15,28 @@ angular.module('signup', [
 			});
 	}])
 
-	.controller('SignupCtrl', ['$scope', '$log', '$uibModal', 'UsersModel', function ($scope, $log, $uibModal, UsersModel) {
+	.controller('SignupCtrl', ['$scope', '$log', '$uibModal', 'UserService', function ($scope, $log, $uibModal, UserService) {
 		var signupCtrl = this;
 
 		// ************************** BEGIN - Private Methods **************************
 		// Launch a modal to fake an email so we can test the confirmation.
-		var spoofEmail = function(user) {
+		var spoofEmail = function(signupResponse) {
 			signupCtrl.modalInstance = $uibModal.open({
 				templateUrl: 'signup/fake-email-modal.tpl.html',
 				controller: 'FakeEmailCtrl as fakeEmailCtrl',
 				resolve: {
-					User: function(){
-						return user;
+					SignupResponse: function(){
+						return signupResponse;
 					}
 				}
 			});
 		};
 
 		var signup = function(user) {
-			UsersModel.signup(user);
+			UserService.signup(user).then(function(response){
+				$log.log('singup() response', response);
+				spoofEmail(response);
+			});
 		};
 		// ************************** //END - Private Methods **************************
 
@@ -43,19 +45,20 @@ angular.module('signup', [
 		// ************************** BEGIN - Public Methods **************************
 		signupCtrl.signUp = function() {
 			signup(signupCtrl.newUser);
-			spoofEmail(signupCtrl.newUser);
 		};
 		// ************************** //END - Public Methods **************************
 	}])
 
 	// This entire controller is temporary until we can hook up to the backend. 
-	.controller('FakeEmailCtrl', ['$scope', '$state', '$uibModalInstance', 'User', function ($scope, $state, $uibModalInstance, User) {
+	.controller('FakeEmailCtrl', ['$scope', '$state', '$log', '$uibModalInstance', 'SignupResponse', function ($scope, $state, $log, $uibModalInstance, SignupResponse) {
 		var fakeEmailCtrl = this,
-			user = fakeEmailCtrl.user = User;
+			signupResponse = fakeEmailCtrl.signupResponse = SignupResponse;
+
+			$log.log('signupResponse',signupResponse);
 
 		fakeEmailCtrl.confirmEmail = function() {
 			$uibModalInstance.close();
-			$state.go('root.signup.confirm', {code:'1234'});
+			$state.go('root.signup.confirm', {from:signupResponse.from_uid,to:signupResponse.to_uid,code:signupResponse.to_challenge_code});
 		};
 		
 		fakeEmailCtrl.cancel = function(){

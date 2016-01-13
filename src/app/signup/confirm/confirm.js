@@ -3,7 +3,7 @@ angular.module('signup.confirm', [])
 	.config(['$stateProvider', function($stateProvider){
 		$stateProvider
 			.state('root.signup.confirm', {
-				url: '/confirm/:code',
+				url: '/confirm/:from/:to/:code',
 				views: {
 					'main@root': {
 						templateUrl: 'signup/confirm/confirm.tpl.html',
@@ -13,28 +13,17 @@ angular.module('signup.confirm', [])
 			});
 	}])
 
-	.controller('ConfirmCtrl', ['$scope', '$log', '$stateParams', '$state', 'UsersModel', function ($scope, $log, $stateParams, $state, UsersModel) {
+	.controller('ConfirmCtrl', ['$scope', '$log', '$stateParams', '$state', 'UserService', function ($scope, $log, $stateParams, $state, UserService) {
 		var confirmCtrl = this,
+			from = $stateParams.from,
+			to = $stateParams.to,
 			code = $stateParams.code;
 
-		// If the code is not accessible from the URL, redirect to the signup page.
-		if(!code){
-			$state.go('root.signup');
-		}
 
-		UsersModel.validate(code);
+		UserService.validate(from,to,code).then(function(response){
+			$log.log('validate() response', response);
+		});
 
-		// ************************** BEGIN - Private Methods **************************
-
-
-		// ************************** //END - Private Methods **************************
-
-
-
-
-		// ************************** BEGIN - Public Methods **************************
-		
-		// ************************** //END - Public Methods **************************
 	}])
 
 ;
