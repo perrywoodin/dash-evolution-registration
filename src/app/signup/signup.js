@@ -34,14 +34,20 @@ angular.module('signup', [
 
 		var signup = function(user) {
 			UserService.signup(user).then(function(response){
+				$log.log('singup() response', response);
 				if(response.error_id){
 					var errors = [];
 					errors.push(response.error_message);
 					$rootScope.$broadcast('ErrorAlert',errors);
 					return;
 				}
-				$log.log('singup() response', response);
-				spoofEmail(response);
+
+				// Following is temporary until the email confrimation is working. 
+				var pendingUser = {
+					id: response.id,
+					challenge_code: response.data.challenge_code
+				};
+				spoofEmail(pendingUser);
 			});
 		};
 		// ************************** //END - Private Methods **************************
@@ -60,9 +66,11 @@ angular.module('signup', [
 		var fakeEmailCtrl = this,
 			signupResponse = fakeEmailCtrl.signupResponse = SignupResponse;
 
+		$log.log('signupResponse: ',signupResponse);
+
 		fakeEmailCtrl.confirmEmail = function() {
 			$uibModalInstance.close();
-			$state.go('root.signup.confirm', {from:signupResponse.from_uid,to:signupResponse.to_uid,code:signupResponse.to_challenge_code});
+			$state.go('root.signup.confirm', {from:'dashevolution',to:signupResponse.id,code:signupResponse.challenge_code});
 		};
 		
 		fakeEmailCtrl.cancel = function(){
@@ -71,3 +79,4 @@ angular.module('signup', [
 	}])
 
 ;
+

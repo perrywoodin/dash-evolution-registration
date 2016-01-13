@@ -67,6 +67,5 @@ angular.module('dashevolution', [
 			showErrorModal(errors);
 		});
 
-	}])
-
+	}])	
 ;

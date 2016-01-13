@@ -24,19 +24,23 @@ angular.module('services.user',[
 				cb:defer
 			};
 			request.callback_id = callbackId;
-			//$log.info('Sending request', request);
+			$log.info('Sending request', request);
 			ws.send(JSON.stringify(request));
 			return defer.promise;
 		}
 
 		function listener(data) {
 			var messageObj = data;
-			//$log.info("Received from websocket: ", messageObj);
+			$log.info("Received from websocket: ", messageObj);
 			// If an object exists with callback_id in our callbacks object, resolve it
 			if(callbacks.hasOwnProperty(messageObj.callback_id)) {
-				//$log.info(callbacks[messageObj.callback_id]);
+				$log.info(callbacks[messageObj.callback_id]);
 				$rootScope.$apply(callbacks[messageObj.callback_id].cb.resolve(messageObj.data));
 				delete callbacks[messageObj.callbackID];
+			} else {
+				// If the ws doesn't parrot back the callbackId, just use the currentCallbackId
+				$rootScope.$apply(callbacks[currentCallbackId].cb.resolve(messageObj.data));
+				delete callbacks[currentCallbackId];
 			}
 		}
 
@@ -48,8 +52,6 @@ angular.module('services.user',[
 			}
 			return currentCallbackId;
 		}
-
-
 
 
 		function inviteUser(user) {

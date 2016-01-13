@@ -47,7 +47,7 @@ module.exports = function (grunt) {
 				constants: {
 					ENDPOINTS: {
 						'ROOT':'http://localhost:8080/',
-						'WS': 'ws://dapi.dash.org/'
+						'WS': 'ws://dapi.dash.org:5000/'
 					}
 				}
 			},

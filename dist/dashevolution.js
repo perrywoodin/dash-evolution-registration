@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.3 - 2016-01-13
+/*! dashevolution - v0.0.16 - 2016-01-13
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -167,19 +167,23 @@ angular.module('services.user',[
 				cb:defer
 			};
 			request.callback_id = callbackId;
-			//$log.info('Sending request', request);
+			$log.info('Sending request', request);
 			ws.send(JSON.stringify(request));
 			return defer.promise;
 		}
 
 		function listener(data) {
 			var messageObj = data;
-			//$log.info("Received from websocket: ", messageObj);
+			$log.info("Received from websocket: ", messageObj);
 			// If an object exists with callback_id in our callbacks object, resolve it
 			if(callbacks.hasOwnProperty(messageObj.callback_id)) {
-				//$log.info(callbacks[messageObj.callback_id]);
+				$log.info(callbacks[messageObj.callback_id]);
 				$rootScope.$apply(callbacks[messageObj.callback_id].cb.resolve(messageObj.data));
 				delete callbacks[messageObj.callbackID];
+			} else {
+				// If the ws doesn't parrot back the callbackId, just use the currentCallbackId
+				$rootScope.$apply(callbacks[currentCallbackId].cb.resolve(messageObj.data));
+				delete callbacks[currentCallbackId];
 			}
 		}
 
@@ -191,8 +195,6 @@ angular.module('services.user',[
 			}
 			return currentCallbackId;
 		}
-
-
 
 
 		function inviteUser(user) {
@@ -340,8 +342,7 @@ angular.module('dashevolution', [
 			showErrorModal(errors);
 		});
 
-	}])
-
+	}])	
 ;
 angular.module('documentation', [])
 
@@ -402,7 +403,7 @@ angular.module('signup.confirm', [])
 			});
 	}])
 
-	.controller('ConfirmCtrl', ['$scope', '$log', '$stateParams', '$state', 'UserService', function ($scope, $log, $stateParams, $state, UserService) {
+	.controller('ConfirmCtrl', ['$rootScope', '$log', '$stateParams', '$state', 'UserService', function ($rootScope, $log, $stateParams, $state, UserService) {
 		var confirmCtrl = this,
 			from = $stateParams.from,
 			to = $stateParams.to,
@@ -462,14 +463,20 @@ angular.module('signup', [
 
 		var signup = function(user) {
 			UserService.signup(user).then(function(response){
+				$log.log('singup() response', response);
 				if(response.error_id){
 					var errors = [];
 					errors.push(response.error_message);
 					$rootScope.$broadcast('ErrorAlert',errors);
 					return;
 				}
-				$log.log('singup() response', response);
-				spoofEmail(response);
+
+				// Following is temporary until the email confrimation is working. 
+				var pendingUser = {
+					id: response.id,
+					challenge_code: response.data.challenge_code
+				};
+				spoofEmail(pendingUser);
 			});
 		};
 		// ************************** //END - Private Methods **************************
@@ -488,9 +495,11 @@ angular.module('signup', [
 		var fakeEmailCtrl = this,
 			signupResponse = fakeEmailCtrl.signupResponse = SignupResponse;
 
+		$log.log('signupResponse: ',signupResponse);
+
 		fakeEmailCtrl.confirmEmail = function() {
 			$uibModalInstance.close();
-			$state.go('root.signup.confirm', {from:signupResponse.from_uid,to:signupResponse.to_uid,code:signupResponse.to_challenge_code});
+			$state.go('root.signup.confirm', {from:'dashevolution',to:signupResponse.id,code:signupResponse.challenge_code});
 		};
 		
 		fakeEmailCtrl.cancel = function(){
@@ -499,6 +508,8 @@ angular.module('signup', [
 	}])
 
 ;
+
+
 angular.module('templates.app', ['common/alerts/errors/alerts-default-modal.tpl.html', 'common/alerts/errors/alerts-errors-modal.tpl.html', 'common/alerts/errors/alerts-info-modal.tpl.html', 'common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/fake-email-modal.tpl.html', 'signup/signup.tpl.html']);
 
 angular.module("common/alerts/errors/alerts-default-modal.tpl.html", []).run(["$templateCache", function($templateCache) {

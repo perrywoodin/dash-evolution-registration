@@ -13,7 +13,7 @@ angular.module('signup.confirm', [])
 			});
 	}])
 
-	.controller('ConfirmCtrl', ['$scope', '$log', '$stateParams', '$state', 'UserService', function ($scope, $log, $stateParams, $state, UserService) {
+	.controller('ConfirmCtrl', ['$rootScope', '$log', '$stateParams', '$state', 'UserService', function ($rootScope, $log, $stateParams, $state, UserService) {
 		var confirmCtrl = this,
 			from = $stateParams.from,
 			to = $stateParams.to,
