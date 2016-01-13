@@ -11,6 +11,7 @@ angular.module('dashevolution', [
 	'signup',
 	'converters',
 	'documentation',
+	'alerts',
 	// Template cache
 	'templates.app',
 	'templates.common' 
@@ -46,9 +47,25 @@ angular.module('dashevolution', [
 
 	}])
 
-	.controller('RootCtrl', ['$rootScope', '$log', function ($rootScope, $log) {
+	.controller('RootCtrl', ['$rootScope', '$log', '$uibModal', function ($rootScope, $log, $uibModal) {
 		var rootCtrl = this;
 
+		var showErrorModal = function(errors){
+			var _errors = errors;
+			rootCtrl.modalInstance = $uibModal.open({
+				templateUrl: 'common/alerts/errors/alerts-errors-modal.tpl.html',
+				controller: 'AlertsErrorsModalCtrl as alertsErrorsModdalCtrl',
+				resolve: {
+					Errors: function(){
+						return _errors;
+					}
+				}
+			});
+		};
+
+		$rootScope.$on('ErrorAlert',function(event,errors){
+			showErrorModal(errors);
+		});
 
 	}])
 

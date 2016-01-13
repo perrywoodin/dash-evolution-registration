@@ -1,7 +1,22 @@
-/*! dashevolution - v0.0.2 - 2016-01-12
+/*! dashevolution - v0.0.3 - 2016-01-13
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
+angular.module('alerts', [
+	'alerts.errors'
+]);
+angular.module('alerts.errors', [])
+
+	.controller('AlertsErrorsModalCtrl', ['$scope', '$uibModalInstance', 'Errors', function ($scope, $uibModalInstance, Errors) {
+		
+		$scope.errors = Errors;
+		
+		$scope.cancel = function(){
+			$uibModalInstance.close();
+		};
+
+	}])
+;
 angular.module('layout', [])
 
 	.controller('HeaderCtrl', ['$rootScope', '$state', '$timeout', '$log', function ($rootScope, $state, $timeout, $log) {
@@ -269,6 +284,7 @@ angular.module('dashevolution', [
 	'signup',
 	'converters',
 	'documentation',
+	'alerts',
 	// Template cache
 	'templates.app',
 	'templates.common' 
@@ -304,9 +320,25 @@ angular.module('dashevolution', [
 
 	}])
 
-	.controller('RootCtrl', ['$rootScope', '$log', function ($rootScope, $log) {
+	.controller('RootCtrl', ['$rootScope', '$log', '$uibModal', function ($rootScope, $log, $uibModal) {
 		var rootCtrl = this;
 
+		var showErrorModal = function(errors){
+			var _errors = errors;
+			rootCtrl.modalInstance = $uibModal.open({
+				templateUrl: 'common/alerts/errors/alerts-errors-modal.tpl.html',
+				controller: 'AlertsErrorsModalCtrl as alertsErrorsModdalCtrl',
+				resolve: {
+					Errors: function(){
+						return _errors;
+					}
+				}
+			});
+		};
+
+		$rootScope.$on('ErrorAlert',function(event,errors){
+			showErrorModal(errors);
+		});
 
 	}])
 
@@ -376,10 +408,20 @@ angular.module('signup.confirm', [])
 			to = $stateParams.to,
 			code = $stateParams.code;
 
-
-		UserService.validate(from,to,code).then(function(response){
-			$log.log('validate() response', response);
-		});
+		if(!from || !to || !code){
+			$state.go('root.home');	
+		} else {
+			UserService.validate(from,to,code).then(function(response){
+				$log.log('validate() response', response);
+				if(response.error_id){
+					var errors = [];
+					errors.push(response.error_message);
+					$rootScope.$broadcast('ErrorAlert',errors);
+					return;
+				}
+				confirmCtrl.success = true;
+			});
+		}
 
 	}])
 
@@ -401,7 +443,7 @@ angular.module('signup', [
 			});
 	}])
 
-	.controller('SignupCtrl', ['$scope', '$log', '$uibModal', 'UserService', function ($scope, $log, $uibModal, UserService) {
+	.controller('SignupCtrl', ['$rootScope', '$log', '$uibModal', 'UserService', function ($rootScope, $log, $uibModal, UserService) {
 		var signupCtrl = this;
 
 		// ************************** BEGIN - Private Methods **************************
@@ -420,13 +462,19 @@ angular.module('signup', [
 
 		var signup = function(user) {
 			UserService.signup(user).then(function(response){
+				if(response.error_id){
+					var errors = [];
+					errors.push(response.error_message);
+					$rootScope.$broadcast('ErrorAlert',errors);
+					return;
+				}
 				$log.log('singup() response', response);
 				spoofEmail(response);
 			});
 		};
 		// ************************** //END - Private Methods **************************
 
-
+		
 
 		// ************************** BEGIN - Public Methods **************************
 		signupCtrl.signUp = function() {
@@ -436,7 +484,7 @@ angular.module('signup', [
 	}])
 
 	// This entire controller is temporary until we can hook up to the backend. 
-	.controller('FakeEmailCtrl', ['$scope', '$state', '$log', '$uibModalInstance', 'SignupResponse', function ($scope, $state, $log, $uibModalInstance, SignupResponse) {
+	.controller('FakeEmailCtrl', ['$state', '$log', '$uibModalInstance', 'SignupResponse', function ($state, $log, $uibModalInstance, SignupResponse) {
 		var fakeEmailCtrl = this,
 			signupResponse = fakeEmailCtrl.signupResponse = SignupResponse;
 
@@ -451,7 +499,58 @@ angular.module('signup', [
 	}])
 
 ;
-angular.module('templates.app', ['common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/fake-email-modal.tpl.html', 'signup/signup.tpl.html']);
+angular.module('templates.app', ['common/alerts/errors/alerts-default-modal.tpl.html', 'common/alerts/errors/alerts-errors-modal.tpl.html', 'common/alerts/errors/alerts-info-modal.tpl.html', 'common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/fake-email-modal.tpl.html', 'signup/signup.tpl.html']);
+
+angular.module("common/alerts/errors/alerts-default-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("common/alerts/errors/alerts-default-modal.tpl.html",
+    "<div class=\"modal-header\">\n" +
+    "	<h3 class=\"modal-title\">Success</h3>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "	\n" +
+    "	<h4>That worked out well. Here's a summary:</h4>\n" +
+    "\n" +
+    "	<div ng-repeat=\"error in errors\">{{error}}</div> \n" +
+    " \n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">	\n" +
+    "	<button class=\"btn btn-success\" ng-click=\"cancel()\">Close</button>\n" +
+    "</div>");
+}]);
+
+angular.module("common/alerts/errors/alerts-errors-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("common/alerts/errors/alerts-errors-modal.tpl.html",
+    "<div class=\"modal-header\">\n" +
+    "	<h3 class=\"modal-title text-danger\">Whoops!</h3>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "	\n" +
+    "	<h4>That didn't work out as expected. Here's what we know:</h4>\n" +
+    "\n" +
+    "	<div ng-repeat=\"error in errors\">{{error}}</div> \n" +
+    " \n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">	\n" +
+    "	<button class=\"btn btn-warning\" ng-click=\"cancel()\">I can fix it</button>\n" +
+    "</div>");
+}]);
+
+angular.module("common/alerts/errors/alerts-info-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("common/alerts/errors/alerts-info-modal.tpl.html",
+    "<div class=\"modal-header\">\n" +
+    "	<h3 class=\"modal-title\">For Your Information</h3>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "	\n" +
+    "	<h4>That was unexpected, but not necessarily incorrect. Here's what we think happened:</h4>\n" +
+    "\n" +
+    "	<div ng-repeat=\"error in errors\">{{error}}</div> \n" +
+    " \n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">	\n" +
+    "	<button class=\"btn btn-primary\" ng-click=\"cancel()\">Carry On</button>\n" +
+    "</div>");
+}]);
 
 angular.module("common/layout/footer.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/layout/footer.tpl.html",
@@ -523,7 +622,9 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 
 angular.module("signup/confirm/confirm.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("signup/confirm/confirm.tpl.html",
-    "<p>Thank you for validating your Dashpay account. Now get out there an preach the gospel fo Dash!</p>");
+    "<div ng-if=\"confirmCtrl.success\">\n" +
+    "	<p>Thank you for validating your Dashpay account. Now get out there an preach the gospel fo Dash!</p>\n" +
+    "</div>");
 }]);
 
 angular.module("signup/fake-email-modal.tpl.html", []).run(["$templateCache", function($templateCache) {

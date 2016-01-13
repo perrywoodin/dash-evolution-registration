@@ -19,10 +19,20 @@ angular.module('signup.confirm', [])
 			to = $stateParams.to,
 			code = $stateParams.code;
 
-
-		UserService.validate(from,to,code).then(function(response){
-			$log.log('validate() response', response);
-		});
+		if(!from || !to || !code){
+			$state.go('root.home');	
+		} else {
+			UserService.validate(from,to,code).then(function(response){
+				$log.log('validate() response', response);
+				if(response.error_id){
+					var errors = [];
+					errors.push(response.error_message);
+					$rootScope.$broadcast('ErrorAlert',errors);
+					return;
+				}
+				confirmCtrl.success = true;
+			});
+		}
 
 	}])
 

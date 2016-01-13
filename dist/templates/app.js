@@ -1,4 +1,55 @@
-angular.module('templates.app', ['common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/fake-email-modal.tpl.html', 'signup/signup.tpl.html']);
+angular.module('templates.app', ['common/alerts/errors/alerts-default-modal.tpl.html', 'common/alerts/errors/alerts-errors-modal.tpl.html', 'common/alerts/errors/alerts-info-modal.tpl.html', 'common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/fake-email-modal.tpl.html', 'signup/signup.tpl.html']);
+
+angular.module("common/alerts/errors/alerts-default-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("common/alerts/errors/alerts-default-modal.tpl.html",
+    "<div class=\"modal-header\">\n" +
+    "	<h3 class=\"modal-title\">Success</h3>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "	\n" +
+    "	<h4>That worked out well. Here's a summary:</h4>\n" +
+    "\n" +
+    "	<div ng-repeat=\"error in errors\">{{error}}</div> \n" +
+    " \n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">	\n" +
+    "	<button class=\"btn btn-success\" ng-click=\"cancel()\">Close</button>\n" +
+    "</div>");
+}]);
+
+angular.module("common/alerts/errors/alerts-errors-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("common/alerts/errors/alerts-errors-modal.tpl.html",
+    "<div class=\"modal-header\">\n" +
+    "	<h3 class=\"modal-title text-danger\">Whoops!</h3>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "	\n" +
+    "	<h4>That didn't work out as expected. Here's what we know:</h4>\n" +
+    "\n" +
+    "	<div ng-repeat=\"error in errors\">{{error}}</div> \n" +
+    " \n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">	\n" +
+    "	<button class=\"btn btn-warning\" ng-click=\"cancel()\">I can fix it</button>\n" +
+    "</div>");
+}]);
+
+angular.module("common/alerts/errors/alerts-info-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("common/alerts/errors/alerts-info-modal.tpl.html",
+    "<div class=\"modal-header\">\n" +
+    "	<h3 class=\"modal-title\">For Your Information</h3>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "	\n" +
+    "	<h4>That was unexpected, but not necessarily incorrect. Here's what we think happened:</h4>\n" +
+    "\n" +
+    "	<div ng-repeat=\"error in errors\">{{error}}</div> \n" +
+    " \n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">	\n" +
+    "	<button class=\"btn btn-primary\" ng-click=\"cancel()\">Carry On</button>\n" +
+    "</div>");
+}]);
 
 angular.module("common/layout/footer.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/layout/footer.tpl.html",
@@ -70,7 +121,9 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 
 angular.module("signup/confirm/confirm.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("signup/confirm/confirm.tpl.html",
-    "<p>Thank you for validating your Dashpay account. Now get out there an preach the gospel fo Dash!</p>");
+    "<div ng-if=\"confirmCtrl.success\">\n" +
+    "	<p>Thank you for validating your Dashpay account. Now get out there an preach the gospel fo Dash!</p>\n" +
+    "</div>");
 }]);
 
 angular.module("signup/fake-email-modal.tpl.html", []).run(["$templateCache", function($templateCache) {

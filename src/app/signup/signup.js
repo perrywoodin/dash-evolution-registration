@@ -15,7 +15,7 @@ angular.module('signup', [
 			});
 	}])
 
-	.controller('SignupCtrl', ['$scope', '$log', '$uibModal', 'UserService', function ($scope, $log, $uibModal, UserService) {
+	.controller('SignupCtrl', ['$rootScope', '$log', '$uibModal', 'UserService', function ($rootScope, $log, $uibModal, UserService) {
 		var signupCtrl = this;
 
 		// ************************** BEGIN - Private Methods **************************
@@ -34,13 +34,19 @@ angular.module('signup', [
 
 		var signup = function(user) {
 			UserService.signup(user).then(function(response){
+				if(response.error_id){
+					var errors = [];
+					errors.push(response.error_message);
+					$rootScope.$broadcast('ErrorAlert',errors);
+					return;
+				}
 				$log.log('singup() response', response);
 				spoofEmail(response);
 			});
 		};
 		// ************************** //END - Private Methods **************************
 
-
+		
 
 		// ************************** BEGIN - Public Methods **************************
 		signupCtrl.signUp = function() {
@@ -50,7 +56,7 @@ angular.module('signup', [
 	}])
 
 	// This entire controller is temporary until we can hook up to the backend. 
-	.controller('FakeEmailCtrl', ['$scope', '$state', '$log', '$uibModalInstance', 'SignupResponse', function ($scope, $state, $log, $uibModalInstance, SignupResponse) {
+	.controller('FakeEmailCtrl', ['$state', '$log', '$uibModalInstance', 'SignupResponse', function ($state, $log, $uibModalInstance, SignupResponse) {
 		var fakeEmailCtrl = this,
 			signupResponse = fakeEmailCtrl.signupResponse = SignupResponse;
 
