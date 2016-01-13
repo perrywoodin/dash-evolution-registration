@@ -54,8 +54,6 @@ angular.module('signup', [
 		var fakeEmailCtrl = this,
 			signupResponse = fakeEmailCtrl.signupResponse = SignupResponse;
 
-			$log.log('signupResponse',signupResponse);
-
 		fakeEmailCtrl.confirmEmail = function() {
 			$uibModalInstance.close();
 			$state.go('root.signup.confirm', {from:signupResponse.from_uid,to:signupResponse.to_uid,code:signupResponse.to_challenge_code});
