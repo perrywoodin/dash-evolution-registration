@@ -15,7 +15,7 @@ angular.module('signup', [
 			});
 	}])
 
-	.controller('SignupCtrl', ['$rootScope', '$log', '$uibModal', 'UserService', function ($rootScope, $log, $uibModal, UserService) {
+	.controller('SignupCtrl', ['$rootScope', '$log', '$timeout', '$uibModal', 'UserService', function ($rootScope, $log, $timeout, $uibModal, UserService) {
 		var signupCtrl = this;
 
 		// ************************** BEGIN - Private Methods **************************

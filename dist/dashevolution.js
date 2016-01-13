@@ -409,7 +409,7 @@ angular.module('signup.confirm', [])
 			});
 	}])
 
-	.controller('ConfirmCtrl', ['$rootScope', '$log', '$stateParams', '$state', 'UserService', function ($rootScope, $log, $stateParams, $state, UserService) {
+	.controller('ConfirmCtrl', ['$rootScope', '$log', '$stateParams', '$state', '$timeout', 'UserService', function ($rootScope, $log, $stateParams, $state, $timeout, UserService) {
 		var confirmCtrl = this,
 			from = $stateParams.from,
 			to = $stateParams.to,
@@ -418,17 +418,21 @@ angular.module('signup.confirm', [])
 		if(!from || !to || !code){
 			$state.go('root.home');	
 		} else {
-			UserService.validate(from,to,code).then(function(response){
-				$log.log('validate() response', response);
-				if(response.error_id){
-					var errors = [];
-					errors.push(response.error_message);
-					$rootScope.$broadcast('ErrorAlert',errors);
-					return;
-				}
-				confirmCtrl.success = true;
-				confirmCtrl.confirmation = response.data;
-			});
+			var validate = function(){
+					UserService.validate(from,to,code).then(function(response){
+					$log.log('validate() response', response);
+					if(response.error_id){
+						var errors = [];
+						errors.push(response.error_message);
+						$rootScope.$broadcast('ErrorAlert',errors);
+						return;
+					}
+					confirmCtrl.success = true;
+					confirmCtrl.confirmation = response.data;
+				});
+			};
+
+			$timeout(validate, 3000);
 		}
 
 	}])
@@ -451,7 +455,7 @@ angular.module('signup', [
 			});
 	}])
 
-	.controller('SignupCtrl', ['$rootScope', '$log', '$uibModal', 'UserService', function ($rootScope, $log, $uibModal, UserService) {
+	.controller('SignupCtrl', ['$rootScope', '$log', '$timeout', '$uibModal', 'UserService', function ($rootScope, $log, $timeout, $uibModal, UserService) {
 		var signupCtrl = this;
 
 		// ************************** BEGIN - Private Methods **************************
