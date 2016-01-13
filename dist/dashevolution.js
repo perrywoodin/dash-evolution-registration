@@ -455,7 +455,7 @@ angular.module('signup', [
 			});
 	}])
 
-	.controller('SignupCtrl', ['$rootScope', '$log', '$timeout', '$uibModal', 'UserService', function ($rootScope, $log, $timeout, $uibModal, UserService) {
+	.controller('SignupCtrl', ['$rootScope', '$log', '$timeout', '$uibModal', 'UserService', 'ENDPOINTS', function ($rootScope, $log, $timeout, $uibModal, UserService, ENDPOINTS) {
 		var signupCtrl = this;
 
 		// ************************** BEGIN - Private Methods **************************
@@ -472,6 +472,21 @@ angular.module('signup', [
 			});
 		};
 
+		var openPendingModal = function(username,email) {
+			signupCtrl.modalInstance = $uibModal.open({
+				templateUrl: 'signup/pending-modal.tpl.html',
+				controller: 'SignupPendingCtrl as signupPendingCtrl',
+				resolve: {
+					Username: function(){
+						return username;
+					},
+					Email: function(){
+						return email;
+					}
+				}
+			});
+		};
+
 		var signup = function(user) {
 			UserService.signup(user).then(function(response){
 				$log.log('singup() response', response);
@@ -482,16 +497,19 @@ angular.module('signup', [
 					return;
 				}
 
-				// Following is temporary until the email confrimation is working. 
-				var pendingUser = {
-					username: user.username,
-					challenge_code: response.data.challenge_code
-				};
-				spoofEmail(pendingUser);
+				// Open a modal to let the user know an email will be sent.
+				openPendingModal(user.username,user.email);
+
+				// Soon, the challange code won't be avaialbe from the reponse. 
+				// For now, how the confirmation link so we can test the entire process.
+				var link = ENDPOINTS.ROOT + '#/signup/confirm/dashevolution/' + user.username + '/' + response.data.challenge_code;
+				$log.info('This needs to go away, but for now...', link);
+
+				// Clear out the user details.
+				signupCtrl.newUser = {};
 			});
 		};
 		// ************************** //END - Private Methods **************************
-
 
 
 
@@ -502,19 +520,12 @@ angular.module('signup', [
 		// ************************** //END - Public Methods **************************
 	}])
 
-	// This entire controller is temporary until we can hook up to the backend. 
-	.controller('FakeEmailCtrl', ['$state', '$log', '$uibModalInstance', 'SignupResponse', function ($state, $log, $uibModalInstance, SignupResponse) {
-		var fakeEmailCtrl = this,
-			signupResponse = fakeEmailCtrl.signupResponse = SignupResponse;
-
-		$log.log('signupResponse: ',signupResponse);
-
-		fakeEmailCtrl.confirmEmail = function() {
-			$uibModalInstance.close();
-			$state.go('root.signup.confirm', {from:'dashevolution',to:signupResponse.username,code:signupResponse.challenge_code});
-		};
+	.controller('SignupPendingCtrl', ['$state', '$log', '$uibModalInstance', 'Username', 'Email', function ($state, $log, $uibModalInstance, Username, Email) {
+		var signupPendingCtrl = this,
+			username = signupPendingCtrl.username = Username,
+			email = signupPendingCtrl.email = Email;
 		
-		fakeEmailCtrl.cancel = function(){
+		signupPendingCtrl.cancel = function(){
 			$uibModalInstance.close();
 		};
 	}])
@@ -522,7 +533,7 @@ angular.module('signup', [
 ;
 
 
-angular.module('templates.app', ['common/alerts/errors/alerts-default-modal.tpl.html', 'common/alerts/errors/alerts-errors-modal.tpl.html', 'common/alerts/errors/alerts-info-modal.tpl.html', 'common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/fake-email-modal.tpl.html', 'signup/signup.tpl.html']);
+angular.module('templates.app', ['common/alerts/errors/alerts-default-modal.tpl.html', 'common/alerts/errors/alerts-errors-modal.tpl.html', 'common/alerts/errors/alerts-info-modal.tpl.html', 'common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/fake-email-modal.tpl.html', 'signup/pending-modal.tpl.html', 'signup/signup.tpl.html']);
 
 angular.module("common/alerts/errors/alerts-default-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/alerts/errors/alerts-default-modal.tpl.html",
@@ -672,6 +683,23 @@ angular.module("signup/fake-email-modal.tpl.html", []).run(["$templateCache", fu
     "\n" +
     "<div class=\"modal-footer\">	\n" +
     "	<button class=\"btn btn-default\" ng-click=\"fakeEmailCtrl.cancel()\">Close</button>\n" +
+    "</div>");
+}]);
+
+angular.module("signup/pending-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("signup/pending-modal.tpl.html",
+    "<div class=\"modal-header\">\n" +
+    "	<h3 class=\"modal-title\">Registration Pending</h3>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=\"modal-body\">\n" +
+    "	<p>Thank you for registering</p>\n" +
+    "\n" +
+    "	<p>An email will be sent to {{signupPendingCtrl.email}} asking you to confirm the registration of the username <strong>{{signupPendingCtrl.username}}</strong></p>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=\"modal-footer\">	\n" +
+    "	<button class=\"btn btn-default\" ng-click=\"signupPendingCtrl.cancel()\">Close</button>\n" +
     "</div>");
 }]);
 

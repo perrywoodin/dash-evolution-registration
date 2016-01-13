@@ -1,4 +1,4 @@
-angular.module('templates.app', ['common/alerts/errors/alerts-default-modal.tpl.html', 'common/alerts/errors/alerts-errors-modal.tpl.html', 'common/alerts/errors/alerts-info-modal.tpl.html', 'common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/fake-email-modal.tpl.html', 'signup/signup.tpl.html']);
+angular.module('templates.app', ['common/alerts/errors/alerts-default-modal.tpl.html', 'common/alerts/errors/alerts-errors-modal.tpl.html', 'common/alerts/errors/alerts-info-modal.tpl.html', 'common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/fake-email-modal.tpl.html', 'signup/pending-modal.tpl.html', 'signup/signup.tpl.html']);
 
 angular.module("common/alerts/errors/alerts-default-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/alerts/errors/alerts-default-modal.tpl.html",
@@ -148,6 +148,23 @@ angular.module("signup/fake-email-modal.tpl.html", []).run(["$templateCache", fu
     "\n" +
     "<div class=\"modal-footer\">	\n" +
     "	<button class=\"btn btn-default\" ng-click=\"fakeEmailCtrl.cancel()\">Close</button>\n" +
+    "</div>");
+}]);
+
+angular.module("signup/pending-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("signup/pending-modal.tpl.html",
+    "<div class=\"modal-header\">\n" +
+    "	<h3 class=\"modal-title\">Registration Pending</h3>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=\"modal-body\">\n" +
+    "	<p>Thank you for registering</p>\n" +
+    "\n" +
+    "	<p>An email will be sent to {{signupPendingCtrl.email}} asking you to confirm the registration of the username <strong>{{signupPendingCtrl.username}}</strong></p>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=\"modal-footer\">	\n" +
+    "	<button class=\"btn btn-default\" ng-click=\"signupPendingCtrl.cancel()\">Close</button>\n" +
     "</div>");
 }]);
 

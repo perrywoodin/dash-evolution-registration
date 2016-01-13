@@ -38,7 +38,7 @@ module.exports = function (grunt) {
 			dev: {
 				constants: {
 					ENDPOINTS: {
-						'ROOT':'http://localhost:8080/',
+						'ROOT':'http://dashevolution.local/',
 						'WS': 'ws://dapi.dash.org:5000/'
 					}
 				}
@@ -46,7 +46,7 @@ module.exports = function (grunt) {
 			prod: {
 				constants: {
 					ENDPOINTS: {
-						'ROOT':'http://localhost:8080/',
+						'ROOT':'http://dashevolution.com/',
 						'WS': 'ws://dapi.dash.org:5000/'
 					}
 				}
