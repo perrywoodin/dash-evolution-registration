@@ -122,7 +122,11 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 angular.module("signup/confirm/confirm.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("signup/confirm/confirm.tpl.html",
     "<div ng-if=\"confirmCtrl.success\">\n" +
-    "	<p>Thank you for validating your Dashpay account. Now get out there an preach the gospel fo Dash!</p>\n" +
+    "	<p>Thank you for validating your Dashpay account.</p> \n" +
+    "\n" +
+    "	<p>The username <strong>{{confirmCtrl.confirmation.username}}</strong> has been validated.</p>\n" +
+    "\n" +
+    "	<p>Now get out there an preach the gospel fo Dash!</p>\n" +
     "</div>");
 }]);
 

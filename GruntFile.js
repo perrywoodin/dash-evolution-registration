@@ -39,7 +39,7 @@ module.exports = function (grunt) {
 				constants: {
 					ENDPOINTS: {
 						'ROOT':'http://localhost:8080/',
-						'WS': 'ws://echo.websocket.org/'
+						'WS': 'ws://dapi.dash.org:5000/'
 					}
 				}
 			},

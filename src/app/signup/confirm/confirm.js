@@ -31,6 +31,7 @@ angular.module('signup.confirm', [])
 					return;
 				}
 				confirmCtrl.success = true;
+				confirmCtrl.confirmation = response.data;
 			});
 		}
 

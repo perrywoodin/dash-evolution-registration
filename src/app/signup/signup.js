@@ -44,7 +44,7 @@ angular.module('signup', [
 
 				// Following is temporary until the email confrimation is working. 
 				var pendingUser = {
-					id: response.id,
+					username: user.username,
 					challenge_code: response.data.challenge_code
 				};
 				spoofEmail(pendingUser);
@@ -52,7 +52,8 @@ angular.module('signup', [
 		};
 		// ************************** //END - Private Methods **************************
 
-		
+
+
 
 		// ************************** BEGIN - Public Methods **************************
 		signupCtrl.signUp = function() {
@@ -70,7 +71,7 @@ angular.module('signup', [
 
 		fakeEmailCtrl.confirmEmail = function() {
 			$uibModalInstance.close();
-			$state.go('root.signup.confirm', {from:'dashevolution',to:signupResponse.id,code:signupResponse.challenge_code});
+			$state.go('root.signup.confirm', {from:'dashevolution',to:signupResponse.username,code:signupResponse.challenge_code});
 		};
 		
 		fakeEmailCtrl.cancel = function(){

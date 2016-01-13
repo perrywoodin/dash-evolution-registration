@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.16 - 2016-01-13
+/*! dashevolution - v0.0.22 - 2016-01-13
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -167,17 +167,23 @@ angular.module('services.user',[
 				cb:defer
 			};
 			request.callback_id = callbackId;
-			$log.info('Sending request', request);
+			/* 
+				Adding the id here is temp because Evan included it 
+				as a property of data instead of part of the root request. 
+				Will revisit after Miami.
+			*/
+			request.data.id = String(callbackId); 
+			//$log.info('Sending request', request);
 			ws.send(JSON.stringify(request));
 			return defer.promise;
 		}
 
 		function listener(data) {
 			var messageObj = data;
-			$log.info("Received from websocket: ", messageObj);
+			//$log.info("Received from websocket: ", messageObj);
 			// If an object exists with callback_id in our callbacks object, resolve it
 			if(callbacks.hasOwnProperty(messageObj.callback_id)) {
-				$log.info(callbacks[messageObj.callback_id]);
+				//$log.info(callbacks[messageObj.callback_id]);
 				$rootScope.$apply(callbacks[messageObj.callback_id].cb.resolve(messageObj.data));
 				delete callbacks[messageObj.callbackID];
 			} else {
@@ -421,6 +427,7 @@ angular.module('signup.confirm', [])
 					return;
 				}
 				confirmCtrl.success = true;
+				confirmCtrl.confirmation = response.data;
 			});
 		}
 
@@ -473,7 +480,7 @@ angular.module('signup', [
 
 				// Following is temporary until the email confrimation is working. 
 				var pendingUser = {
-					id: response.id,
+					username: user.username,
 					challenge_code: response.data.challenge_code
 				};
 				spoofEmail(pendingUser);
@@ -481,7 +488,8 @@ angular.module('signup', [
 		};
 		// ************************** //END - Private Methods **************************
 
-		
+
+
 
 		// ************************** BEGIN - Public Methods **************************
 		signupCtrl.signUp = function() {
@@ -499,7 +507,7 @@ angular.module('signup', [
 
 		fakeEmailCtrl.confirmEmail = function() {
 			$uibModalInstance.close();
-			$state.go('root.signup.confirm', {from:'dashevolution',to:signupResponse.id,code:signupResponse.challenge_code});
+			$state.go('root.signup.confirm', {from:'dashevolution',to:signupResponse.username,code:signupResponse.challenge_code});
 		};
 		
 		fakeEmailCtrl.cancel = function(){
@@ -634,7 +642,11 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 angular.module("signup/confirm/confirm.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("signup/confirm/confirm.tpl.html",
     "<div ng-if=\"confirmCtrl.success\">\n" +
-    "	<p>Thank you for validating your Dashpay account. Now get out there an preach the gospel fo Dash!</p>\n" +
+    "	<p>Thank you for validating your Dashpay account.</p> \n" +
+    "\n" +
+    "	<p>The username <strong>{{confirmCtrl.confirmation.username}}</strong> has been validated.</p>\n" +
+    "\n" +
+    "	<p>Now get out there an preach the gospel fo Dash!</p>\n" +
     "</div>");
 }]);
 

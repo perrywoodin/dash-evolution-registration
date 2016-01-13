@@ -24,17 +24,23 @@ angular.module('services.user',[
 				cb:defer
 			};
 			request.callback_id = callbackId;
-			$log.info('Sending request', request);
+			/* 
+				Adding the id here is temp because Evan included it 
+				as a property of data instead of part of the root request. 
+				Will revisit after Miami.
+			*/
+			request.data.id = String(callbackId); 
+			//$log.info('Sending request', request);
 			ws.send(JSON.stringify(request));
 			return defer.promise;
 		}
 
 		function listener(data) {
 			var messageObj = data;
-			$log.info("Received from websocket: ", messageObj);
+			//$log.info("Received from websocket: ", messageObj);
 			// If an object exists with callback_id in our callbacks object, resolve it
 			if(callbacks.hasOwnProperty(messageObj.callback_id)) {
-				$log.info(callbacks[messageObj.callback_id]);
+				//$log.info(callbacks[messageObj.callback_id]);
 				$rootScope.$apply(callbacks[messageObj.callback_id].cb.resolve(messageObj.data));
 				delete callbacks[messageObj.callbackID];
 			} else {
