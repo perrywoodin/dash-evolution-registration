@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.23 - 2016-01-14
+/*! dashevolution - v0.0.24 - 2016-01-14
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
