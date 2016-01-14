@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.22 - 2016-01-14
+/*! dashevolution - v0.0.23 - 2016-01-14
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -502,11 +502,6 @@ angular.module('signup', [
 
 				// Open a modal to let the user know an email will be sent.
 				openPendingModal(user.username,user.email);
-
-				// Soon, the challange code won't be avaialbe from the reponse. 
-				// For now, how the confirmation link so we can test the entire process.
-				var link = ENDPOINTS.ROOT + '#/signup/confirm/dashevolution/' + user.username + '/' + response.data.challenge_code;
-				$log.info('This needs to go away, but for now...', link);
 
 				// Clear out the user details.
 				signupCtrl.newUser = {};
