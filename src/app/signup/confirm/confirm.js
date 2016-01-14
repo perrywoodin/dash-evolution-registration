@@ -19,11 +19,13 @@ angular.module('signup.confirm', [])
 			to = $stateParams.to,
 			code = $stateParams.code;
 
+		confirmCtrl.showLoading = true;
+
 		if(!from || !to || !code){
 			$state.go('root.home');	
 		} else {
 			var validate = function(){
-					UserService.validate(from,to,code).then(function(response){
+				UserService.validate(from,to,code).then(function(response){
 					$log.log('validate() response', response);
 					if(response.error_id){
 						var errors = [];
@@ -31,6 +33,7 @@ angular.module('signup.confirm', [])
 						$rootScope.$broadcast('ErrorAlert',errors);
 						return;
 					}
+					confirmCtrl.showLoading = false;
 					confirmCtrl.success = true;
 					confirmCtrl.confirmation = response.data;
 				});

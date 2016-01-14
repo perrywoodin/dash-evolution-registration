@@ -6,7 +6,7 @@ angular.module('converters', [])
 				url: '/converters',
 				views: {
 					'main@root': {
-						template: 'converters/converters.tpl.html',
+						templateUrl: 'converters/converters.tpl.html',
 						controller: 'ConvertersCtrl as convertersCtrl'
 					}
 				}

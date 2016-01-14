@@ -265,7 +265,7 @@ angular.module('converters', [])
 				url: '/converters',
 				views: {
 					'main@root': {
-						template: 'converters/converters.tpl.html',
+						templateUrl: 'converters/converters.tpl.html',
 						controller: 'ConvertersCtrl as convertersCtrl'
 					}
 				}
@@ -415,11 +415,13 @@ angular.module('signup.confirm', [])
 			to = $stateParams.to,
 			code = $stateParams.code;
 
+		confirmCtrl.showLoading = true;
+
 		if(!from || !to || !code){
 			$state.go('root.home');	
 		} else {
 			var validate = function(){
-					UserService.validate(from,to,code).then(function(response){
+				UserService.validate(from,to,code).then(function(response){
 					$log.log('validate() response', response);
 					if(response.error_id){
 						var errors = [];
@@ -427,6 +429,7 @@ angular.module('signup.confirm', [])
 						$rootScope.$broadcast('ErrorAlert',errors);
 						return;
 					}
+					confirmCtrl.showLoading = false;
 					confirmCtrl.success = true;
 					confirmCtrl.confirmation = response.data;
 				});
@@ -535,7 +538,7 @@ angular.module('signup', [
 ;
 
 
-angular.module('templates.app', ['common/alerts/errors/alerts-default-modal.tpl.html', 'common/alerts/errors/alerts-errors-modal.tpl.html', 'common/alerts/errors/alerts-info-modal.tpl.html', 'common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/fake-email-modal.tpl.html', 'signup/pending-modal.tpl.html', 'signup/signup.tpl.html']);
+angular.module('templates.app', ['common/alerts/errors/alerts-default-modal.tpl.html', 'common/alerts/errors/alerts-errors-modal.tpl.html', 'common/alerts/errors/alerts-info-modal.tpl.html', 'common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'converters/converters.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/fake-email-modal.tpl.html', 'signup/pending-modal.tpl.html', 'signup/signup.tpl.html']);
 
 angular.module("common/alerts/errors/alerts-default-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/alerts/errors/alerts-default-modal.tpl.html",
@@ -616,7 +619,7 @@ angular.module("common/layout/header.tpl.html", []).run(["$templateCache", funct
     "						<li class=\"divider\"></li>\n" +
     "						<li><a ui-sref=\"root.signup\">Signup</a></li>\n" +
     "						<li><a ui-sref=\"root.converters\">Search Converters</a></li>\n" +
-    "						<li><a ui-sref=\"root.documentation\">Documentation</a></li>\n" +
+    "						<li><a href=\"https://www.dash.org/evolution/\">Documentation</a></li>\n" +
     "					</ul>\n" +
     "				</li>\n" +
     "			</ul>\n" +
@@ -638,9 +641,26 @@ angular.module("common/layout/main.tpl.html", []).run(["$templateCache", functio
     "<div class=\"row\" ui-view=\"footer\"></div>");
 }]);
 
+angular.module("converters/converters.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("converters/converters.tpl.html",
+    "<div class=\"row\">\n" +
+    "	<div class=\"col-sm-6\">\n" +
+    "		<h1>Converters</h1>\n" +
+    "		<ul style=\"font-size:2em;\">\n" +
+    "			<li style=\"padding:.5em 0;\">Search for users that want to sell Dash.</li>\n" +
+    "			<li style=\"padding:.5em 0;\">Buy some Dash.</li>\n" +
+    "			<li style=\"padding:.5em 0;\">Rate them for their service!</li>\n" +
+    "		</ul>\n" +
+    "	</div>\n" +
+    "	<div class=\"col-sm-6\">\n" +
+    "		<img class=\"img-responsive\" src=\"img/converters_map.png\"/>\n" +
+    "	</div>\n" +
+    "</div>");
+}]);
+
 angular.module("home/home.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("home/home.tpl.html",
-    "<p>Radio telescope explorations Vangelis. Tingling of the spine explorations permanence of the stars billions upon billions Apollonius of Perga white dwarf radio telescope! Euclid tesseract bits of moving fluff encyclopaedia galactica finite but unbounded? Bits of moving fluff, finite but unbounded are creatures of the cosmos! Muse about, Cambrian explosion, encyclopaedia galactica the ash of stellar alchemy. Corpus callosum! Great turbulent clouds extraordinary claims require extraordinary evidence a very small stage in a vast cosmic arena Vangelis Hypatia star stuff harvesting star light.</p>\n" +
+    "<p>Signup for a Dash Evolution username.</p>\n" +
     "\n" +
     "<div class=\"row push-down\">\n" +
     "	<div class=\"col-xs-4 text-center\">\n" +
@@ -650,7 +670,7 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "		<button class=\"btn btn-primary\" ui-sref=\"root.converters\">Search Converters</button>\n" +
     "	</div>\n" +
     "	<div class=\"col-xs-4 text-center\">\n" +
-    "		<button class=\"btn btn-primary\" ui-sref=\"root.documentation\">Documentation</button>\n" +
+    "		<a class=\"btn btn-primary\" href=\"https://www.dash.org/evolution/\">Documentation</a>\n" +
     "	</div>\n" +
     "\n" +
     "</div>");
@@ -658,6 +678,10 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 
 angular.module("signup/confirm/confirm.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("signup/confirm/confirm.tpl.html",
+    "<div ng-if=\"confirmCtrl.showLoading\">\n" +
+    "	Validating your account, please stand by...\n" +
+    "</div>\n" +
+    "\n" +
     "<div ng-if=\"confirmCtrl.success\">\n" +
     "	<p>Thank you for validating your Dashpay account.</p> \n" +
     "\n" +
