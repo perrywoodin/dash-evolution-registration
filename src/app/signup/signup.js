@@ -15,7 +15,7 @@ angular.module('signup', [
 			});
 	}])
 
-	.controller('SignupCtrl', ['$rootScope', '$log', '$timeout', '$uibModal', 'UserService', 'ENDPOINTS', function ($rootScope, $log, $timeout, $uibModal, UserService, ENDPOINTS) {
+	.controller('SignupCtrl', ['$rootScope', '$scope', '$log', '$timeout', '$uibModal', 'UserService', 'ENDPOINTS', function ($rootScope, $scope, $log, $timeout, $uibModal, UserService, ENDPOINTS) {
 		var signupCtrl = this;
 
 		// ************************** BEGIN - Private Methods **************************
@@ -67,6 +67,8 @@ angular.module('signup', [
 
 				// Clear out the user details.
 				signupCtrl.newUser = {};
+				// Reset the form validation.
+				signupCtrl.form.$setPristine();
 			});
 		};
 		// ************************** //END - Private Methods **************************

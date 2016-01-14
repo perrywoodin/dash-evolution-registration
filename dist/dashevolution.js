@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.22 - 2016-01-13
+/*! dashevolution - v0.0.22 - 2016-01-14
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -455,7 +455,7 @@ angular.module('signup', [
 			});
 	}])
 
-	.controller('SignupCtrl', ['$rootScope', '$log', '$timeout', '$uibModal', 'UserService', 'ENDPOINTS', function ($rootScope, $log, $timeout, $uibModal, UserService, ENDPOINTS) {
+	.controller('SignupCtrl', ['$rootScope', '$scope', '$log', '$timeout', '$uibModal', 'UserService', 'ENDPOINTS', function ($rootScope, $scope, $log, $timeout, $uibModal, UserService, ENDPOINTS) {
 		var signupCtrl = this;
 
 		// ************************** BEGIN - Private Methods **************************
@@ -507,6 +507,8 @@ angular.module('signup', [
 
 				// Clear out the user details.
 				signupCtrl.newUser = {};
+				// Reset the form validation.
+				signupCtrl.form.$setPristine();
 			});
 		};
 		// ************************** //END - Private Methods **************************
@@ -705,20 +707,20 @@ angular.module("signup/pending-modal.tpl.html", []).run(["$templateCache", funct
 
 angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("signup/signup.tpl.html",
-    "<form name=\"form\" class=\"form-horizontal\" novalidate>\n" +
-    "	<div class=\"form-group\" ng-class=\"{'has-error':form.username.$invalid && form.username.$dirty, 'has-success':form.username.$valid}\">\n" +
+    "<form name=\"signupCtrl.form\" class=\"form-horizontal\" novalidate>\n" +
+    "	<div class=\"form-group\" ng-class=\"{'has-error':signupCtrl.form.username.$invalid && signupCtrl.form.username.$dirty, 'has-success':signupCtrl.form.username.$valid}\">\n" +
     "		<label for=\"inputUsername\" class=\"col-sm-2 control-label\">Username</label>\n" +
     "		<div class=\"col-sm-10\">\n" +
     "			<input ng-model=\"signupCtrl.newUser.username\" name=\"username\" type=\"text\" class=\"form-control\" id=\"inputUsername\" placeholder=\"Username\" required>\n" +
     "		</div>\n" +
     "	</div>\n" +
-    "	<div class=\"form-group\" ng-class=\"{'has-error':form.email.$invalid && form.email.$dirty, 'has-success':form.email.$valid}\">\n" +
+    "	<div class=\"form-group\" ng-class=\"{'has-error':signupCtrl.form.email.$invalid && signupCtrl.form.email.$dirty, 'has-success':signupCtrl.form.email.$valid}\">\n" +
     "		<label for=\"inputEmail\" class=\"col-sm-2 control-label\">Email</label>\n" +
     "		<div class=\"col-sm-10\">\n" +
     "			<input ng-model=\"signupCtrl.newUser.email\" name=\"email\" type=\"email\" class=\"form-control\" id=\"inputEmail\" placeholder=\"Email\" required>\n" +
     "		</div>\n" +
     "	</div>\n" +
-    "	<!-- <div class=\"form-group\" ng-class=\"{'has-error':form.rootPubkey.$invalid && form.rootPubkey.$dirty, 'has-success':form.rootPubkey.$valid}\">\n" +
+    "	<!-- <div class=\"form-group\" ng-class=\"{'has-error':signupCtrl.form.rootPubkey.$invalid && signupCtrl.form.rootPubkey.$dirty, 'has-success':signupCtrl.form.rootPubkey.$valid}\">\n" +
     "		<label for=\"inputPubkey\" class=\"col-sm-2 control-label\">Root Pubkey</label>\n" +
     "		<div class=\"col-sm-10\">\n" +
     "			<input ng-model=\"signupCtrl.newUser.rootPubkey\" name=\"rootPubkey\" type=\"text\" class=\"form-control\" id=\"inputPubkey\" placeholder=\"Root Pubkey\" required>\n" +
@@ -726,7 +728,7 @@ angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($te
     "	</div> -->\n" +
     "	<div class=\"form-group\">\n" +
     "		<div class=\"col-sm-offset-2 col-sm-10\">\n" +
-    "			<button ng-click=\"signupCtrl.signUp()\" ng-disabled=\"form.$invalid\" type=\"submit\" class=\"btn btn-primary\">Signup</button>\n" +
+    "			<button ng-click=\"signupCtrl.signUp()\" ng-disabled=\"signupCtrl.form.$invalid\" type=\"submit\" class=\"btn btn-primary\">Signup</button>\n" +
     "		</div>\n" +
     "	</div>\n" +
     "</form>");
