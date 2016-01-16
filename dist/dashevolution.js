@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.24 - 2016-01-14
+/*! dashevolution - v0.0.25 - 2016-01-15
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -655,7 +655,28 @@ angular.module("converters/converters.tpl.html", []).run(["$templateCache", func
 
 angular.module("home/home.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("home/home.tpl.html",
-    "<p>Signup for a Dash Evolution username.</p>\n" +
+    "<h3>DASH - EVOLUTION</h3>\n" +
+    "<p>We know <strong>cryptocurrencies</strong> can be confusing and hard to use for most people.</p>\n" +
+    "<p>That's why we created <strong>Dash Evolution</strong>, the first cryptocurrency you can use on <strong>web and mobile</strong> without an intermediary.</p>\n" +
+    "<p>Evolution enables <strong>seamless integration</strong> of Dash payments to any web-store or app in minutes without the need for complex infrastructure or centralized 3rd party services.</p>\n" +
+    "<p>Users can <strong>pay friends and shop online</strong> as easily as they do with PayPal and Google Wallet <strong>without losing privacy and control</strong> of their money to a 3rd party.</p>\n" +
+    "<p><strong>No additional software</strong> is needed and the service is <strong>100% free</strong>, <strong>open source</strong> and <strong>decentralized</strong>.</p>\n" +
+    "\n" +
+    "<h3>SOCIAL</h3>\n" +
+    "<ul class=\"left\">\n" +
+    "	<li>Create an account you can <strong>access securely from anywhere on any device</strong>.</li>\n" +
+    "	<li>Invite and connect with friends to <strong>make and receive payments by username</strong>.</li>\n" +
+    "	<li>Track payments with contacts and <strong>share payment descriptions</strong> with payees.</li>\n" +
+    "	<li><strong>Clear your transaction history</strong> at any time to stay private, as easy as clearing your browser history.</li>\n" +
+    "</ul>\n" +
+    "\n" +
+    "<h3>MERCHANTS</h3>\n" +
+    "<ul class=\"left\">\n" +
+    "	<li><strong>Add Dash payments</strong> to your app <strong>in minutes</strong> using common <strong>web standards</strong>.</li>\n" +
+    "	<li><strong>Forget about complex infrastructure</strong> or centralized services being needed to handle your customer's funds.</li>\n" +
+    "	<li>Keep <strong>full control</strong> of your funds without the hassle or hidden costs of centralized payment processors.</li>\n" +
+    "</ul>\n" +
+    "\n" +
     "\n" +
     "<div class=\"row push-down\">\n" +
     "	<div class=\"col-xs-4 text-center\">\n" +

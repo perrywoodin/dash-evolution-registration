@@ -50,6 +50,10 @@ textarea.nowrap {
     overflow-x: scroll;
 }
 
+ul.left {
+	padding-left:1em;
+}
+
 .text-white { color: #ffffff; }
 
 @keyframes fadeOut
