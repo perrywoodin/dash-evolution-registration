@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.25 - 2016-01-15
+/*! dashevolution - v0.0.26 - 2016-01-16
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -747,7 +747,10 @@ angular.module("signup/pending-modal.tpl.html", []).run(["$templateCache", funct
 
 angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("signup/signup.tpl.html",
-    "<form name=\"signupCtrl.form\" class=\"form-horizontal\" novalidate>\n" +
+    "<h1>Signup for Dash Evolution</h1>\n" +
+    "<p>Signup with a unique username for the Dash network and we'll send you an email to confirm it's you.</p>\n" +
+    "\n" +
+    "<form name=\"signupCtrl.form\" class=\"form-horizontal push-down\" novalidate>\n" +
     "	<div class=\"form-group\" ng-class=\"{'has-error':signupCtrl.form.username.$invalid && signupCtrl.form.username.$dirty, 'has-success':signupCtrl.form.username.$valid}\">\n" +
     "		<label for=\"inputUsername\" class=\"col-sm-2 control-label\">Username</label>\n" +
     "		<div class=\"col-sm-10\">\n" +
