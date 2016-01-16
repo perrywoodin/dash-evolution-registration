@@ -1,11 +1,13 @@
 <div class="modal-header">
-	<h3 class="modal-title">Registration Pending</h3>
+	<h3 class="modal-title">Email Confirmation</h3>
 </div>
 
 <div class="modal-body">
-	<p>Thank you for registering</p>
+	<p>Thank you <strong>{{signupPendingCtrl.username}}</strong>!</p>
 
-	<p>An email will be sent to {{signupPendingCtrl.email}} asking you to confirm the registration of the username <strong>{{signupPendingCtrl.username}}</strong></p>
+	<p>We've sent an email to <strong>{{signupPendingCtrl.email}}</strong> so you can confirm it's you.</p>
+
+	<p>Please check your spam folder if you didn't receive it.</p>
 </div>
 
 <div class="modal-footer">	
