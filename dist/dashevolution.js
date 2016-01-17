@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.24 - 2016-01-14
+/*! dashevolution - v0.0.25 - 2016-01-17
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -135,8 +135,37 @@ angular.module('services.httpResponseInterceptor', [])
 	}])
 ;
 
+angular.module('services.payment',[])
+
+	.service('PaymentService', ['$http', '$q', '$log', 'ENDPOINTS', function ($http, $q, $log, ENDPOINTS) {
+		var service = this,
+			request;
+
+		function extract(result) {
+			if(result.data){
+				return result.data;
+			}
+			return result;
+		}
+
+		service.donate = function(username){
+			var data = {};
+			
+			$http.defaults.headers.post['Content-Type'] = 'text/plain';	
+
+			data['username'] = username;
+			
+			request = $http.post(ENDPOINTS.DONATION,data);
+			return request.then(function(response){
+				return extract(response);
+			});
+		};
+
+	}])
+;
 angular.module('services', [
 	'services.user',
+	'services.payment',
 	'services.httpResponseInterceptor',
 	'services.httpRequestTracker',	
 	'services.bitcoin'
@@ -291,6 +320,7 @@ angular.module('dashevolution', [
 	'home',
 	'signup',
 	'converters',
+	'vendors',
 	'documentation',
 	'alerts',
 	// Template cache
@@ -299,7 +329,8 @@ angular.module('dashevolution', [
 ])
 
 	.config(["$httpProvider", "$stateProvider", "$locationProvider", "$urlRouterProvider", function ($httpProvider, $stateProvider, $locationProvider, $urlRouterProvider) { 
-		
+		$httpProvider.interceptors.push('httpResponseInterceptor');
+
 		$locationProvider.html5Mode(false);
 		$stateProvider
 			.state('root', {
@@ -533,7 +564,84 @@ angular.module('signup', [
 ;
 
 
-angular.module('templates.app', ['common/alerts/errors/alerts-default-modal.tpl.html', 'common/alerts/errors/alerts-errors-modal.tpl.html', 'common/alerts/errors/alerts-info-modal.tpl.html', 'common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'converters/converters.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/fake-email-modal.tpl.html', 'signup/pending-modal.tpl.html', 'signup/signup.tpl.html']);
+angular.module('vendors', [
+		'services.payment'
+	])
+
+	.config(['$stateProvider', function($stateProvider){
+		$stateProvider
+			.state('root.vendors', {
+				url: '/vendors',
+				views: {
+					'main@root': {
+						templateUrl: 'vendors/vendors.tpl.html',
+						controller: 'VendorsCtrl as vendorsCtrl'
+					}
+				}
+			});
+	}])
+
+	.controller('VendorsCtrl', ['$scope', '$log', '$uibModal', 'PaymentService', function ($scope, $log, $uibModal, PaymentService) {
+		var vendorsCtrl = this;
+
+		// ************************** BEGIN - Private Methods **************************
+		var openDonationModal = function() {
+			vendorsCtrl.modalInstance = $uibModal.open({
+				templateUrl: 'vendors/vendors-donation-modal.tpl.html',
+				controller: 'DonationCtrl as donationCtrl'
+			});
+		};
+		// ************************** //END - Private Methods **************************
+
+		
+
+		// ************************** BEGIN - Public Methods **************************
+		vendorsCtrl.donate = function() {
+			openDonationModal();
+		};
+		// ************************** //END - Public Methods **************************
+	}])
+
+	.controller('DonationCtrl', ['$log', '$state', '$uibModalInstance', 'PaymentService', function ($log, $state, $uibModalInstance, PaymentService) {
+
+		var donationCtrl = this;
+
+		donationCtrl.showLoading = false;
+		donationCtrl.showRfpMessage = false;
+		donationCtrl.showSuccess = false;
+
+		var donate = function(username) {
+			donationCtrl.showLoading = true;
+			donationCtrl.showRfpMessage = true;
+			
+			PaymentService.donate(username).then(function(response){
+
+				if(response.message === 'success'){
+					donationCtrl.showRfpMessage = false;
+					donationCtrl.showSuccess = true;
+				}
+
+				donationCtrl.showLoading = false;
+			});
+		};
+
+		donationCtrl.donate = function() {
+			donate(donationCtrl.username);
+		};
+
+		donationCtrl.gotoSignupPage = function() {
+			$uibModalInstance.close();
+			$state.go('root.signup');
+		};
+		
+		donationCtrl.cancel = function() {
+			$uibModalInstance.close();
+		};
+		
+	}])
+
+;
+angular.module('templates.app', ['common/alerts/errors/alerts-default-modal.tpl.html', 'common/alerts/errors/alerts-errors-modal.tpl.html', 'common/alerts/errors/alerts-info-modal.tpl.html', 'common/layout/footer.tpl.html', 'common/layout/header.tpl.html', 'common/layout/main.tpl.html', 'converters/converters.tpl.html', 'home/home.tpl.html', 'signup/confirm/confirm.tpl.html', 'signup/fake-email-modal.tpl.html', 'signup/pending-modal.tpl.html', 'signup/signup.tpl.html', 'vendors/vendors-donation-modal.tpl.html', 'vendors/vendors.tpl.html']);
 
 angular.module("common/alerts/errors/alerts-default-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("common/alerts/errors/alerts-default-modal.tpl.html",
@@ -614,6 +722,7 @@ angular.module("common/layout/header.tpl.html", []).run(["$templateCache", funct
     "						<li class=\"divider\"></li>\n" +
     "						<li><a ui-sref=\"root.signup\">Signup</a></li>\n" +
     "						<li><a ui-sref=\"root.converters\">Search Converters</a></li>\n" +
+    "						<li><a ui-sref=\"root.vendors\">Vendors</a></li>\n" +
     "						<li><a href=\"https://www.dash.org/evolution/\">Documentation</a></li>\n" +
     "					</ul>\n" +
     "				</li>\n" +
@@ -751,6 +860,69 @@ angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($te
     "		</div>\n" +
     "	</div>\n" +
     "</form>");
+}]);
+
+angular.module("vendors/vendors-donation-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("vendors/vendors-donation-modal.tpl.html",
+    "<div class=\"modal-header\">\n" +
+    "	<h3 class=\"modal-title\">Donate to the Dash Foundation</h3>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=\"modal-body\">\n" +
+    "\n" +
+    "	<p>This feature will demonstrate use of the Dash Evolution payment system.</p>\n" +
+    "\n" +
+    "	<p>Simply enter your Dash username below and click the donate button. If you don't yet have a Dash username, please visit the <a ng-click=\"donationCtrl.gotoSignupPage()\" href=\"\">Signup</a> page.</p>\n" +
+    "\n" +
+    "	<form name=\"donationCtrl.form\" class=\"form-inline\" novalidate>\n" +
+    "		<div class=\"row\">\n" +
+    "			\n" +
+    "			<div class=\"form-group col-xs-8\" ng-class=\"{'has-error':donationCtrl.form.username.$invalid && donationCtrl.form.username.$dirty, 'has-success':donationCtrl.form.username.$valid}\">\n" +
+    "				<label for=\"inputUsername\" class=\"sr-only\">Username</label>\n" +
+    "				<input ng-model=\"donationCtrl.username\" name=\"username\" type=\"text\" class=\"form-control fill-width\" id=\"inputUsername\" placeholder=\"Username\" required>\n" +
+    "			</div>\n" +
+    "			\n" +
+    "			<div class=\"col-xs-4\">\n" +
+    "				<button ng-click=\"donationCtrl.donate()\" ng-disabled=\"donationCtrl.form.$invalid || donationCtrl.showLoading\" type=\"submit\" class=\"btn btn-primary\">Donate</button>\n" +
+    "\n" +
+    "				<span ng-show=\"donationCtrl.showLoading\" class=\"pull-right glyphicons glyphicons-refresh glyphicon-spin\"></span>\n" +
+    "			</div>\n" +
+    "		</div>\n" +
+    "	</form>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=\"modal-footer\">	\n" +
+    "	<p class=\"pull-left text-primary\" ng-if=\"donationCtrl.showRfpMessage\">A request for payment has been sent to your Dash Evolution wallet.</p>\n" +
+    "\n" +
+    "	<p class=\"pull-left text-success\" ng-if=\"donationCtrl.showSuccess\">Thank you. Your donation has been received.</p>\n" +
+    "\n" +
+    "	<button class=\"btn btn-default\" ng-click=\"donationCtrl.cancel()\">Close</button>\n" +
+    "</div>");
+}]);
+
+angular.module("vendors/vendors.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("vendors/vendors.tpl.html",
+    "<h1>Vendors</h1>\n" +
+    "\n" +
+    "<div class=\"row\">\n" +
+    "	<div class=\"col-sm-6\">\n" +
+    "		<h3>Dash Foundation</h3>\n" +
+    "\n" +
+    "		<p>Would you like to donate 0.33 Dash to the Dash Foundation using Dash Evolution?</p>\n" +
+    "\n" +
+    "		<button ng-click=\"vendorsCtrl.donate();\" class=\"btn btn-primary\">Yes! I would like to donate.</button>\n" +
+    "\n" +
+    "	</div>\n" +
+    "	<div class=\"col-sm-6\">\n" +
+    "		<img src=\"/img/Node40.png\" class=\"img-responsive\" style=\"width:140px; padding:1em 0;\">\n" +
+    "\n" +
+    "		<p>Node40 offers managed masternode servies and was an early adopter of Dash Evolution. Their first integration with Dash Evolution supported invoicing of their customers. Read more about it at the <a href=\"https://blog.node40.com\" target=\"_blank\">Node40 blog</a>, or visit <a href=\"https://node40.com\" target=\"_blank\">https://node40.com</a>\n" +
+    "		\n" +
+    "		</p> \n" +
+    "	</div>\n" +
+    "</div>\n" +
+    "\n" +
+    "");
 }]);
 
 angular.module('templates.common', []);

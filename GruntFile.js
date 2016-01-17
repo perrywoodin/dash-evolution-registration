@@ -30,6 +30,8 @@ module.exports = function (grunt) {
 				constants: {
 					ENDPOINTS: {
 						'ROOT':'http://localhost:8080/',
+						'PAYMENT_REQUEST':'http://dapi.dash.org:9000/api/v1/payment-request',
+						'DONATION': 'http://52.72.11.101/donate',
 						'WS': 'ws://echo.websocket.org/'
 					},
 					debug: true
@@ -38,7 +40,9 @@ module.exports = function (grunt) {
 			dev: {
 				constants: {
 					ENDPOINTS: {
-						'ROOT':'http://dashevolution.local/',
+						'ROOT':'http://dashevolution.com/',
+						'PAYMENT_REQUEST':'http://dapi.dash.org:9000/api/v1/payment-request',
+						'DONATION': 'http://52.72.11.101/donate',
 						'WS': 'ws://dapi.dash.org:5000/'
 					}
 				}
@@ -47,6 +51,8 @@ module.exports = function (grunt) {
 				constants: {
 					ENDPOINTS: {
 						'ROOT':'http://dashevolution.com/',
+						'PAYMENT_REQUEST':'http://dapi.dash.org:9000/api/v1/payment-request',
+						'DONATION': 'http://52.72.11.101/donate',
 						'WS': 'ws://dapi.dash.org:5000/'
 					}
 				}
