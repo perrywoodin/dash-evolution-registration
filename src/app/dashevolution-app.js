@@ -10,6 +10,7 @@ angular.module('dashevolution', [
 	'home',
 	'signup',
 	'converters',
+	'vendors',
 	'documentation',
 	'alerts',
 	// Template cache
@@ -18,7 +19,8 @@ angular.module('dashevolution', [
 ])
 
 	.config(function ($httpProvider, $stateProvider, $locationProvider, $urlRouterProvider) { 
-		
+		$httpProvider.interceptors.push('httpResponseInterceptor');
+
 		$locationProvider.html5Mode(false);
 		$stateProvider
 			.state('root', {
