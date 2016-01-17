@@ -165,11 +165,15 @@ angular.module("signup/confirm/confirm.tpl.html", []).run(["$templateCache", fun
     "</div>\n" +
     "\n" +
     "<div ng-if=\"confirmCtrl.success\">\n" +
-    "	<p>Thank you for validating your Dashpay account.</p> \n" +
+    "	<h1>Signup Complete</h1>\n" +
     "\n" +
-    "	<p>The username <strong>{{confirmCtrl.confirmation.username}}</strong> has been validated.</p>\n" +
+    "	<p>Welcome, <strong>{{confirmCtrl.confirmation.username}}</strong>!</p>\n" +
     "\n" +
-    "	<p>Now get out there an preach the gospel fo Dash!</p>\n" +
+    "	<p>Your email has been confirmed and you are ready to use Dash Evolution.</p>\n" +
+    "\n" +
+    "	<p>Our prototype wallet will be released soon, please check back for an update!<p>\n" +
+    "\n" +
+    "	<p>If you'd like to compile the latest version yourself without waiting, please grab the latest version from our <a href=\"https://github.com/evan82/electrum-dash/tree/v13-evo-demo\">Github</a>.)</p>\n" +
     "</div>");
 }]);
 
@@ -197,13 +201,15 @@ angular.module("signup/fake-email-modal.tpl.html", []).run(["$templateCache", fu
 angular.module("signup/pending-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("signup/pending-modal.tpl.html",
     "<div class=\"modal-header\">\n" +
-    "	<h3 class=\"modal-title\">Registration Pending</h3>\n" +
+    "	<h3 class=\"modal-title\">Email Confirmation</h3>\n" +
     "</div>\n" +
     "\n" +
     "<div class=\"modal-body\">\n" +
-    "	<p>Thank you for registering</p>\n" +
+    "	<p>Thank you <strong>{{signupPendingCtrl.username}}</strong>!</p>\n" +
     "\n" +
-    "	<p>An email will be sent to {{signupPendingCtrl.email}} asking you to confirm the registration of the username <strong>{{signupPendingCtrl.username}}</strong></p>\n" +
+    "	<p>We've sent an email to <strong>{{signupPendingCtrl.email}}</strong> so you can confirm it's you.</p>\n" +
+    "\n" +
+    "	<p>Please check your spam folder if you didn't receive it.</p>\n" +
     "</div>\n" +
     "\n" +
     "<div class=\"modal-footer\">	\n" +
@@ -214,7 +220,7 @@ angular.module("signup/pending-modal.tpl.html", []).run(["$templateCache", funct
 angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("signup/signup.tpl.html",
     "<h1>Signup for Dash Evolution</h1>\n" +
-    "<p>Signup with a unique username for the Dash network and we'll send you an email to confirm it's you.</p>\n" +
+    "<p>Signup with a unique username for Dash Evolution and we'll send you an email to confirm it's you.</p>\n" +
     "\n" +
     "<form name=\"signupCtrl.form\" class=\"form-horizontal push-down\" novalidate>\n" +
     "	<div class=\"form-group\" ng-class=\"{'has-error':signupCtrl.form.username.$invalid && signupCtrl.form.username.$dirty, 'has-success':signupCtrl.form.username.$valid}\">\n" +
