@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.27 - 2016-01-17
+/*! dashevolution - v0.0.28 - 2016-01-17
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -722,7 +722,7 @@ angular.module("common/layout/header.tpl.html", []).run(["$templateCache", funct
     "						<li class=\"divider\"></li>\n" +
     "						<li><a ui-sref=\"root.signup\">Signup</a></li>\n" +
     "						<li><a ui-sref=\"root.converters\">Search Converters</a></li>\n" +
-    "						<li><a ui-sref=\"root.vendors\">Vendors</a></li>\n" +
+    "						<li><a ui-sref=\"root.vendors\">Merchants</a></li>\n" +
     "						<li><a href=\"https://www.dash.org/evolution/\">Documentation</a></li>\n" +
     "					</ul>\n" +
     "				</li>\n" +
@@ -932,7 +932,7 @@ angular.module("vendors/vendors-donation-modal.tpl.html", []).run(["$templateCac
 
 angular.module("vendors/vendors.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("vendors/vendors.tpl.html",
-    "<h1>Vendors</h1>\n" +
+    "<h1>Merchants</h1>\n" +
     "\n" +
     "<div class=\"row\">\n" +
     "	<div class=\"col-sm-6\">\n" +
@@ -941,7 +941,6 @@ angular.module("vendors/vendors.tpl.html", []).run(["$templateCache", function($
     "		<p>Would you like to donate 0.33 Dash to the Dash Foundation using Dash Evolution?</p>\n" +
     "\n" +
     "		<button ng-click=\"vendorsCtrl.donate();\" class=\"btn btn-primary\">Yes! I would like to donate.</button>\n" +
-    "\n" +
     "	</div>\n" +
     "	<div class=\"col-sm-6\">\n" +
     "		<img src=\"/img/Node40.png\" class=\"img-responsive\" style=\"width:140px; padding:1em 0;\">\n" +
