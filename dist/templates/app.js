@@ -303,7 +303,7 @@ angular.module("vendors/vendors.tpl.html", []).run(["$templateCache", function($
     "	<div class=\"col-sm-6\">\n" +
     "		<img src=\"/img/Node40.png\" class=\"img-responsive\" style=\"width:140px; padding:1em 0;\">\n" +
     "\n" +
-    "		<p>Node40 offers managed masternode servies and was an early adopter of Dash Evolution. Their first integration with Dash Evolution supported invoicing of their customers. Read more about it at the <a href=\"https://blog.node40.com\" target=\"_blank\">Node40 blog</a>, or visit <a href=\"https://node40.com\" target=\"_blank\">https://node40.com</a>\n" +
+    "		<p>Node40 offers managed masternode servies and was an early adopter of Dash Evolution. Their first integration with Dash Evolution supported invoicing of their customers. Read more about it at the <a href=\"https://node40.com/blog/node40-integrates-with-dash-evolution/\" target=\"_blank\">Node40 blog</a>, or visit <a href=\"https://node40.com\" target=\"_blank\">https://node40.com</a>\n" +
     "		\n" +
     "		</p> \n" +
     "	</div>\n" +
