@@ -1,7 +1,7 @@
 {
   "author": "Perry Woodin <perry@node40.com>",
   "name": "dashevolution",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.2",

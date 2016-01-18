@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.28 - 2016-01-17
+/*! dashevolution - v0.0.29 - 2016-01-17
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -150,8 +150,6 @@ angular.module('services.payment',[])
 
 		service.donate = function(username){
 			var data = {};
-			
-			$http.defaults.headers.post['Content-Type'] = 'text/plain';	
 
 			data['username'] = username;
 			

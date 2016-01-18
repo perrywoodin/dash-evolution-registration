@@ -13,8 +13,6 @@ angular.module('services.payment',[])
 
 		service.donate = function(username){
 			var data = {};
-			
-			$http.defaults.headers.post['Content-Type'] = 'text/plain';	
 
 			data['username'] = username;
 			
