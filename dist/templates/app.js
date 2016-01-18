@@ -78,7 +78,6 @@ angular.module("common/layout/header.tpl.html", []).run(["$templateCache", funct
     "						<li><a ui-sref=\"root.home\">Home</a></li>\n" +
     "						<li class=\"divider\"></li>\n" +
     "						<li><a ui-sref=\"root.signup\">Signup</a></li>\n" +
-    "						<li><a ui-sref=\"root.converters\">Search Converters</a></li>\n" +
     "						<li><a ui-sref=\"root.vendors\">Merchants</a></li>\n" +
     "						<li><a href=\"https://www.dash.org/evolution/\">Documentation</a></li>\n" +
     "					</ul>\n" +
@@ -149,7 +148,7 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "		<button class=\"btn btn-primary\" ui-sref=\"root.signup\">Signup</button>\n" +
     "	</div>\n" +
     "	<div class=\"col-xs-4 text-center\">\n" +
-    "		<button class=\"btn btn-primary\" ui-sref=\"root.converters\">Search Converters</button>\n" +
+    "		<button class=\"btn btn-primary\" ui-sref=\"root.vendors\">Merchants</button>\n" +
     "	</div>\n" +
     "	<div class=\"col-xs-4 text-center\">\n" +
     "		<a class=\"btn btn-primary\" href=\"https://www.dash.org/evolution/\">Documentation</a>\n" +
