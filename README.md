@@ -11,7 +11,11 @@ Checkout the repo.
 
 ## Local development
 
-All development should take place in the **/src** directory. 
+All development should take place in the **/src** directory.
+
+After making changes, build using grunt.
+
+* 'grunt build'
 
 ### Templates
 The directory structure is self-documenting. Most pages will have a corresponding directory with a **.js** file and a **.tpl.html** file. The **.tpl.html** files contain all of the basic html. The **.tpl** tells grunt this is a template that should be converted from HTML to JS. 
@@ -26,6 +30,6 @@ All services are located in **/src/app/common/services/** and **/src/app/common/
 
 ## Build to dist/
 
-While developing, you can have grunt build to **/dist** by running the following: `grunt watch`
+While developing, you can have grunt build to **/dist** automatically by running the following: `grunt watch`
 
 For production build simply run `grunt deploy`
