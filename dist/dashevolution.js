@@ -1,4 +1,4 @@
-/*! dashevolution - v0.0.30 - 2016-01-18
+/*! dashevolution - v0.0.31 - 2016-01-22
  * Copyright (c) 2016 Perry Woodin <perry@node40.com>;
  * Licensed 
  */
@@ -809,11 +809,9 @@ angular.module("signup/confirm/confirm.tpl.html", []).run(["$templateCache", fun
     "\n" +
     "	<p>Welcome, <strong>{{confirmCtrl.confirmation.username}}</strong>!</p>\n" +
     "\n" +
-    "	<p>Your email has been confirmed and you are ready to use Dash Evolution.</p>\n" +
+    "	<p>Your email has been confirmed.</p>\n" +
     "\n" +
-    "	<p>Our prototype wallet will be released soon, please check back for an update!<p>\n" +
-    "\n" +
-    "	<p>If you'd like to compile the latest version yourself without waiting, please grab the latest version from our <a href=\"https://github.com/evan82/electrum-dash/tree/v13-evo-demo\">Github</a>.)</p>\n" +
+    "	<p>To access Evolution with your new account, please download the latest wallet from the <a href=\"https://www.dash.org/evolution/\">Dash Evolution Homepage</a>.</p>\n" +
     "</div>");
 }]);
 
@@ -861,6 +859,7 @@ angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($te
   $templateCache.put("signup/signup.tpl.html",
     "<h1>Signup for Dash Evolution</h1>\n" +
     "<p>Signup with a unique username for Dash Evolution and we'll send you an email to confirm it's you.</p>\n" +
+    "<p>(NOTE: Signup is running slow due to high traffic and we are working on the issue.  Sorry about that!)</p>\n" +
     "\n" +
     "<form name=\"signupCtrl.form\" class=\"form-horizontal push-down\" novalidate>\n" +
     "	<div class=\"form-group\" ng-class=\"{'has-error':signupCtrl.form.username.$invalid && signupCtrl.form.username.$dirty, 'has-success':signupCtrl.form.username.$valid}\">\n" +
