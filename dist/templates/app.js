@@ -145,7 +145,8 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "\n" +
     "<div class=\"row push-down\">\n" +
     "	<div class=\"col-xs-4 text-center\">\n" +
-    "		<button class=\"btn btn-primary\" ui-sref=\"root.signup\">Signup</button>\n" +
+    "		<button class=\"btn btn-primary\" disabled=\"true\">Signup</button>\n" +
+    "		<p><small>Signups are disabled while we work on the Evolution alpha, please stay tuned.</small></p>\n" +
     "	</div>\n" +
     "	<div class=\"col-xs-4 text-center\">\n" +
     "		<button class=\"btn btn-primary\" ui-sref=\"root.vendors\">Merchants</button>\n" +
@@ -217,6 +218,7 @@ angular.module("signup/pending-modal.tpl.html", []).run(["$templateCache", funct
 angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("signup/signup.tpl.html",
     "<h1>Signup for Dash Evolution</h1>\n" +
+    "<p><strong>Signups are disabled while we work on the Evolution alpha, please stay tuned.</strong></p>\n" +
     "<p>Signup with a unique username for Dash Evolution and we'll send you an email to confirm it's you.</p>\n" +
     "<p>(NOTE: Signup is running slow due to high traffic and we are working on the issue.  Sorry about that!)</p>\n" +
     "\n" +
@@ -241,7 +243,7 @@ angular.module("signup/signup.tpl.html", []).run(["$templateCache", function($te
     "	</div> -->\n" +
     "	<div class=\"form-group\">\n" +
     "		<div class=\"col-sm-offset-2 col-sm-10\">\n" +
-    "			<button ng-click=\"signupCtrl.signUp()\" ng-disabled=\"signupCtrl.form.$invalid\" type=\"submit\" class=\"btn btn-primary\">Signup</button>\n" +
+    "			<button disabled=\"true\" ng-disabled=\"signupCtrl.form.$invalid\" type=\"submit\" class=\"btn btn-primary\">Signup</button>\n" +
     "		</div>\n" +
     "	</div>\n" +
     "</form>");
